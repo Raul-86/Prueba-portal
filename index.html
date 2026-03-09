@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Trabajos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --azul: #2563EB;
+            --verde: #16A34A;
+            --amarillo: #D97706;
+            --rojo: #DC2626;
+            --celeste: #0891B2;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: #F8FAFC; color: #1E293B; min-height: 100vh; }
+
+        /* ── LOGIN ── */
+        .login-wrap {
+            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; padding: 20px;
+            background: linear-gradient(135deg, #1E293B 0%, #2563EB 100%);
+        }
+        .login-box {
+            background: white; border-radius: 16px; padding: 40px;
+            width: 100%; max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,.18);
+        }
+        .login-top { text-align: center; margin-bottom: 28px; }
+        .login-top .ico { font-size: 44px; display: block; margin-bottom: 10px; }
+        .login-top h1 { font-size: 22px; font-weight: 700; }
+        .login-top p  { color: #64748B; font-size: 14px; margin-top: 4px; }
+
+        label { display: block; font-size: 13px; font-weight: 500; color: #475569; margin-bottom: 5px; }
+        input[type=email], input[type=password] {
+            width: 100%; padding: 10px 12px; font-size: 14px; font-family: inherit;
+            border: 1.5px solid #E2E8F0; border-radius: 8px; outline: none;
+            transition: border-color .15s; margin-bottom: 14px;
+        }
+        input:focus { border-color: var(--azul); box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 500;
+            font-family: inherit; cursor: pointer; border: none; transition: all .15s;
+        }
+        .btn-primary { background: var(--azul); color: white; width: 100%; }
+        .btn-primary:hover { background: #1D4ED8; }
+        .btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+        .btn-salir { background: #F1F5F9; color: #475569; padding: 7px 14px; font-size: 13px; border-radius: 6px; }
+        .btn-salir:hover { background: #E2E8F0; }
+        .btn-sheets {
+            background: #1A73E8; color: white; font-size: 13px;
+            padding: 8px 16px; border-radius: 8px;
+        }
+        .btn-sheets:hover { background: #1557B0; }
+
+        .error-box {
+            background: #FEF2F2; color: var(--rojo);
+            border: 1px solid #FECACA; border-radius: 8px;
+            padding: 10px 12px; font-size: 13px; margin-bottom: 14px;
+        }
+
+        /* ── CABECERA ── */
+        .cabecera {
+            background: white; border-bottom: 1px solid #E2E8F0;
+            padding: 0 24px; height: 58px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 10;
+            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+        }
+        .cab-logo { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 700; }
+        .cab-right { display: flex; align-items: center; gap: 12px; }
+        .cab-name { font-size: 14px; font-weight: 500; color: #475569; }
+
+        /* ── CONTENIDO ── */
+        .contenido { max-width: 1000px; margin: 0 auto; padding: 28px 24px; }
+        .titulo-pag { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+        .sub-pag { font-size: 14px; color: #64748B; margin-bottom: 24px; }
+        .fila-top {
+            display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 10px; margin-bottom: 24px;
+        }
+
+        /* ── BADGES ── */
+        .badge {
+            display: inline-flex; align-items: center;
+            padding: 3px 10px; border-radius: 20px;
+            font-size: 12px; font-weight: 600;
+        }
+        .s-pendiente   { background:#F1F5F9; color:#64748B; }
+        .s-en_revision { background:#ECFEFF; color:#0891B2; }
+        .s-en_proceso  { background:#FFFBEB; color:#D97706; }
+        .s-completado  { background:#F0FDF4; color:#16A34A; }
+        .s-cancelado   { background:#FEF2F2; color:#DC2626; }
+
+        /* ── TARJETAS DE TRABAJO ── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .tarjeta {
+            background: white; border-radius: 12px; padding: 18px;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 1px 3px rgba(0,0,0,.06);
+            transition: box-shadow .15s, transform .1s;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .tarjeta:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); transform: translateY(-1px); }
+        .tarjeta-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .trabajo-titulo { font-size: 15px; font-weight: 600; color: #1E293B; line-height: 1.4; }
+        .trabajo-desc  { font-size: 13px; color: #64748B; line-height: 1.5; }
+        .trabajo-nota  {
+            font-size: 13px; color: #475569;
+            background: #F8FAFC; border-radius: 6px;
+            padding: 8px 10px; border-left: 3px solid #CBD5E1;
+        }
+        .trabajo-fecha { font-size: 11px; color: #94A3B8; border-top: 1px solid #F1F5F9; padding-top: 8px; }
+        .docs-lista { display: flex; flex-direction: column; gap: 6px; }
+        .doc-enlace {
+            display: flex; align-items: center; gap: 8px; padding: 7px 10px;
+            background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px;
+            text-decoration: none; color: var(--azul); font-size: 13px; font-weight: 500;
+            transition: background .1s;
+        }
+        .doc-enlace:hover { background: #EFF6FF; border-color: #BFDBFE; }
+
+        /* ── ADMIN: sección por cliente ── */
+        .cliente-seccion { margin-bottom: 36px; }
+        .cliente-cabecera {
+            display: flex; align-items: center; gap: 12px;
+            margin-bottom: 14px; padding-bottom: 12px;
+            border-bottom: 1px solid #E2E8F0;
+        }
+        .cliente-inicial {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: var(--azul); color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 16px; flex-shrink: 0;
+        }
+        .cliente-nom { font-size: 16px; font-weight: 600; }
+        .cliente-email { font-size: 13px; color: #64748B; }
+
+        /* ── VACÍO ── */
+        .vacio { text-align: center; padding: 60px 20px; color: #94A3B8; grid-column: 1/-1; }
+        .vacio .vacio-ico { font-size: 48px; display: block; margin-bottom: 12px; }
+
+        /* ── SPINNER ── */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner {
+            display: inline-block; width: 18px; height: 18px;
+            border: 2px solid rgba(255,255,255,.3);
+            border-top-color: white; border-radius: 50%;
+            animation: spin .7s linear infinite;
+        }
+        .cargando { text-align: center; padding: 50px; color: #94A3B8; font-size: 14px; }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+            .contenido { padding: 18px 14px; }
+            .cabecera { padding: 0 14px; }
+            .cab-name { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     PANTALLA: LOGIN
+════════════════════════════════════════════ -->
+<div id="p-login" style="display:none;">
+    <div class="login-wrap">
+        <div class="login-box">
+            <div class="login-top">
+                <span class="ico">📋</span>
+                <h1>Portal de Trabajos</h1>
+                <p>Ingresa con tus credenciales</p>
+            </div>
+            <div id="err-login" class="error-box" style="display:none;"></div>
+            <label for="inp-email">Correo electrónico</label>
+            <input type="email" id="inp-email" placeholder="tu@email.com" autocomplete="email">
+            <label for="inp-pass">Contraseña</label>
+            <input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password">
+            <button class="btn btn-primary" id="btn-entrar" onclick="entrar()">
+                Iniciar Sesión
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PANTALLA: CLIENTE
+════════════════════════════════════════════ -->
+<div id="p-cliente" style="display:none;">
+    <header class="cabecera">
+        <div class="cab-logo">📋 Mis Trabajos</div>
+        <div class="cab-right">
+            <span class="cab-name" id="nombre-cliente"></span>
+            <button class="btn btn-salir" onclick="salir()">Salir</button>
+        </div>
+    </header>
+    <div class="contenido">
+        <div class="titulo-pag" id="saludo-cliente">Mis Trabajos</div>
+        <div class="sub-pag">Estado actualizado de todos tus proyectos</div>
+        <div class="grid" id="grid-cliente">
+            <div class="cargando">Cargando...</div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PANTALLA: ADMIN
+════════════════════════════════════════════ -->
+<div id="p-admin" style="display:none;">
+    <header class="cabecera">
+        <div class="cab-logo">📋 Panel de Administración</div>
+        <div class="cab-right">
+            <button class="btn btn-sheets" id="btn-hoja" onclick="abrirHoja()">
+                ✏️ Editar en Google Sheets
+            </button>
+            <button class="btn btn-salir" onclick="salir()">Salir</button>
+        </div>
+    </header>
+    <div class="contenido">
+        <div class="fila-top">
+            <div>
+                <div class="titulo-pag">Todos los Clientes</div>
+                <div class="sub-pag">Para actualizar estados, usa el botón "Editar en Google Sheets"</div>
+            </div>
+        </div>
+        <div id="contenido-admin">
+            <div class="cargando">Cargando...</div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     AVISO: CONFIGURACIÓN PENDIENTE
+════════════════════════════════════════════ -->
+<div id="p-config" style="display:none;">
+    <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;">
+        <div style="text-align:center;max-width:480px;">
+            <div style="font-size:52px;margin-bottom:16px;">⚙️</div>
+            <h2 style="margin-bottom:10px;font-size:22px;">Configuración pendiente</h2>
+            <p style="color:#64748B;font-size:15px;line-height:1.6;">
+                Abre el archivo <strong>index.html</strong>, busca la línea:<br>
+                <code style="background:#F1F5F9;padding:3px 10px;border-radius:6px;display:inline-block;margin:10px 0;font-size:13px;">const URL_SCRIPT = 'PEGA_AQUI_TU_URL'</code><br>
+                y reemplázala con tu URL de Google Apps Script.<br><br>
+                Revisa el archivo <strong>README.md</strong> para los pasos detallados.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════
+//  ⚙️  CONFIGURACIÓN — SOLO CAMBIA ESTA LÍNEA:
+// ════════════════════════════════════════════════
+const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbze3hMML4H6PxmN_dh5HbO5vC4yPYsX6GTsGJm8dzD1N8ynz0DGTnEMVfbDLeRhWtITIg/exec';
+
+
+// ════════════════════════════════════════════════
+//  ESTADO
+// ════════════════════════════════════════════════
+let urlHoja = '#';
+
+const ESTADOS = {
+    pendiente:   'Pendiente',
+    en_revision: 'En Revisión',
+    en_proceso:  'En Proceso',
+    completado:  'Completado',
+    cancelado:   'Cancelado',
+};
+
+// ════════════════════════════════════════════════
+//  MOSTRAR PANTALLAS
+// ════════════════════════════════════════════════
+function mostrar(id) {
+    ['p-login','p-cliente','p-admin','p-config'].forEach(p =>
+        document.getElementById(p).style.display = 'none'
+    );
+    document.getElementById(id).style.display = 'block';
+}
+
+// ════════════════════════════════════════════════
+//  LOGIN
+// ════════════════════════════════════════════════
+async function entrar() {
+    const email = document.getElementById('inp-email').value.trim();
+    const pass  = document.getElementById('inp-pass').value;
+    const btn   = document.getElementById('btn-entrar');
+    const err   = document.getElementById('err-login');
+
+    err.style.display = 'none';
+
+    if (!email || !pass) {
+        err.textContent = 'Por favor ingresa tu correo y contraseña.';
+        err.style.display = 'block';
+        return;
+    }
+
+    btn.innerHTML = '<span class="spinner"></span> Entrando…';
+    btn.disabled  = true;
+
+    try {
+        const url  = `${URL_SCRIPT}?email=${encodeURIComponent(email)}&pass=${encodeURIComponent(pass)}`;
+        const res  = await fetch(url);
+        const data = await res.json();
+
+        if (data.error) {
+            err.textContent    = data.error;
+            err.style.display  = 'block';
+        } else if (data.role === 'admin') {
+            urlHoja = data.sheetUrl || '#';
+            mostrarAdmin(data.clients || []);
+        } else if (data.role === 'client') {
+            mostrarCliente(data);
+        }
+    } catch (e) {
+        err.textContent   = 'Error de conexión. Verifica la URL del script en el archivo index.html.';
+        err.style.display = 'block';
+        console.error(e);
+    }
+
+    btn.innerHTML = 'Iniciar Sesión';
+    btn.disabled  = false;
+}
+
+function salir() {
+    document.getElementById('inp-email').value = '';
+    document.getElementById('inp-pass').value  = '';
+    mostrar('p-login');
+}
+
+function abrirHoja() {
+    window.open(urlHoja, '_blank');
+}
+
+// ════════════════════════════════════════════════
+//  VISTA CLIENTE
+// ════════════════════════════════════════════════
+function mostrarCliente(data) {
+    document.getElementById('nombre-cliente').textContent = data.name;
+    document.getElementById('saludo-cliente').textContent = `Hola, ${data.name}`;
+    renderGrid('grid-cliente', data.jobs || []);
+    mostrar('p-cliente');
+}
+
+// ════════════════════════════════════════════════
+//  VISTA ADMIN
+// ════════════════════════════════════════════════
+function mostrarAdmin(clientes) {
+    const cont = document.getElementById('contenido-admin');
+
+    if (!clientes.length) {
+        cont.innerHTML = `<div class="vacio">
+            <span class="vacio-ico">👤</span>
+            <p>Aún no hay clientes. Agrégalos en Google Sheets.</p>
+        </div>`;
+        mostrar('p-admin');
+        return;
+    }
+
+    cont.innerHTML = clientes.map(c => {
+        const ini = (c.name || '?').charAt(0).toUpperCase();
+        const trabajos = c.jobs && c.jobs.length
+            ? `<div class="grid">${c.jobs.map(tarjetaHTML).join('')}</div>`
+            : `<p style="color:#94A3B8;font-size:14px;padding:8px 0">Sin trabajos aún.</p>`;
+        return `
+        <div class="cliente-seccion">
+            <div class="cliente-cabecera">
+                <div class="cliente-inicial">${ini}</div>
+                <div>
+                    <div class="cliente-nom">${c.name}</div>
+                    <div class="cliente-email">${c.email}</div>
+                </div>
+            </div>
+            ${trabajos}
+        </div>`;
+    }).join('');
+
+    mostrar('p-admin');
+}
+
+// ════════════════════════════════════════════════
+//  RENDER: GRID DE TRABAJOS
+// ════════════════════════════════════════════════
+function renderGrid(id, trabajos) {
+    const grid = document.getElementById(id);
+    if (!trabajos.length) {
+        grid.innerHTML = `<div class="vacio">
+            <span class="vacio-ico">📂</span>
+            <p>No hay trabajos registrados aún.</p>
+        </div>`;
+        return;
+    }
+    grid.innerHTML = trabajos.map(tarjetaHTML).join('');
+}
+
+function tarjetaHTML(t) {
+    const cls   = `s-${t.status}`;
+    const label = ESTADOS[t.status] || t.status;
+
+    const nota  = t.note
+        ? `<div class="trabajo-nota">💬 ${t.note}</div>`
+        : '';
+
+    const docs  = (t.docs && t.docs.length)
+        ? `<div class="docs-lista">
+            ${t.docs.filter(Boolean).map((d, i) => {
+                const icono = d.includes('drive.google')  ? '📄' :
+                              d.includes('youtube.com')   ? '🎬' :
+                              d.includes('.pdf')          ? '📄' :
+                              d.includes('.jpg') || d.includes('.png') || d.includes('.jpeg') ? '🖼️' :
+                              '📎';
+                const nombre = d.split('/').pop().split('?')[0] || `Archivo ${i+1}`;
+                return `<a href="${d}" target="_blank" class="doc-enlace">${icono} ${nombre}</a>`;
+            }).join('')}
+           </div>`
+        : '';
+
+    const fecha = t.date
+        ? `<div class="trabajo-fecha">Actualizado: ${t.date}</div>`
+        : '';
+
+    return `
+    <div class="tarjeta">
+        <div class="tarjeta-top">
+            <span class="badge ${cls}">${label}</span>
+        </div>
+        <div class="trabajo-titulo">${t.title}</div>
+        ${t.description ? `<div class="trabajo-desc">${t.description}</div>` : ''}
+        ${nota}
+        ${docs}
+        ${fecha}
+    </div>`;
+}
+
+// ════════════════════════════════════════════════
+//  INICIO
+// ════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+    // Enter en cualquier campo → intentar login
+    ['inp-email','inp-pass'].forEach(id => {
+        document.getElementById(id).addEventListener('keydown', e => {
+            if (e.key === 'Enter') entrar();
+        });
+    });
+
+    // Detectar si la URL está configurada
+    if (URL_SCRIPT === 'PEGA_AQUI_TU_URL') {
+        mostrar('p-config');
+    } else {
+        mostrar('p-login');
+    }
+});
+</script>
+</body>
+</html>
