@@ -7,170 +7,171 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --azul: #2563EB;
-            --verde: #16A34A;
-            --amarillo: #D97706;
-            --rojo: #DC2626;
-            --celeste: #0891B2;
+            --azul:#2563EB; --azul-dark:#1D4ED8; --azul-light:#EFF6FF;
+            --verde:#16A34A; --verde-light:#F0FDF4;
+            --ambar:#D97706; --ambar-light:#FFFBEB;
+            --rojo:#DC2626;  --rojo-light:#FEF2F2;
+            --cyan:#0891B2;  --cyan-light:#ECFEFF;
+            --gris:#64748B;  --gris-light:#F1F5F9;
+            --borde:#E2E8F0; --texto:#1E293B; --muted:#64748B;
         }
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: #F8FAFC; color: #1E293B; min-height: 100vh; }
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        html,body{height:100%}
+        body{font-family:'Inter',sans-serif;background:#F8FAFC;color:var(--texto);font-size:14px;-webkit-font-smoothing:antialiased}
+        a{text-decoration:none}
+        button{cursor:pointer;border:none;background:none;font-family:inherit;font-size:14px}
 
-        /* ── LOGIN ── */
-        .login-wrap {
-            display: flex; align-items: center; justify-content: center;
-            min-height: 100vh; padding: 20px;
-            background: linear-gradient(135deg, #1E293B 0%, #2563EB 100%);
-        }
-        .login-box {
-            background: white; border-radius: 16px; padding: 40px;
-            width: 100%; max-width: 400px;
-            box-shadow: 0 20px 40px rgba(0,0,0,.18);
-        }
-        .login-top { text-align: center; margin-bottom: 28px; }
-        .login-top .ico { font-size: 44px; display: block; margin-bottom: 10px; }
-        .login-top h1 { font-size: 22px; font-weight: 700; }
-        .login-top p  { color: #64748B; font-size: 14px; margin-top: 4px; }
+        /* ── Botones ── */
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 16px;border-radius:8px;font-weight:500;transition:all .15s;border:none;font-family:inherit}
+        .btn-primary{background:var(--azul);color:#fff}.btn-primary:hover{background:var(--azul-dark)}.btn-primary:disabled{opacity:.6;cursor:not-allowed}
+        .btn-ghost{background:#F1F5F9;color:#475569}.btn-ghost:hover{background:#E2E8F0}
+        .btn-sheets{background:#1A73E8;color:#fff;font-size:13px;padding:7px 14px;border-radius:7px}.btn-sheets:hover{background:#1557B0}
+        .btn-salir{background:#F1F5F9;color:#475569;padding:7px 14px;border-radius:7px;font-size:13px}.btn-salir:hover{background:#E2E8F0}
+        .btn-sm{padding:6px 12px;font-size:13px}
+        .btn-full{width:100%}
+        .btn-icon{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:6px;background:#F1F5F9;font-size:15px;transition:background .15s}.btn-icon:hover{background:#E2E8F0}
 
-        label { display: block; font-size: 13px; font-weight: 500; color: #475569; margin-bottom: 5px; }
-        input[type=email], input[type=password] {
-            width: 100%; padding: 10px 12px; font-size: 14px; font-family: inherit;
-            border: 1.5px solid #E2E8F0; border-radius: 8px; outline: none;
-            transition: border-color .15s; margin-bottom: 14px;
-        }
-        input:focus { border-color: var(--azul); box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
+        /* ── Inputs ── */
+        input[type=text],input[type=email],input[type=password],input[type=number],textarea,select{
+            font-family:inherit;font-size:14px;padding:9px 12px;border:1.5px solid var(--borde);border-radius:8px;outline:none;width:100%;background:#fff;color:var(--texto);transition:border-color .15s}
+        input:focus,textarea:focus,select:focus{border-color:var(--azul);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+        textarea{resize:vertical}
+        label{display:block;font-size:13px;font-weight:500;color:#475569;margin-bottom:4px}
+        .campo{margin-bottom:14px}
 
-        .btn {
-            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
-            padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 500;
-            font-family: inherit; cursor: pointer; border: none; transition: all .15s;
-        }
-        .btn-primary { background: var(--azul); color: white; width: 100%; }
-        .btn-primary:hover { background: #1D4ED8; }
-        .btn-primary:disabled { opacity: .6; cursor: not-allowed; }
-        .btn-salir { background: #F1F5F9; color: #475569; padding: 7px 14px; font-size: 13px; border-radius: 6px; }
-        .btn-salir:hover { background: #E2E8F0; }
-        .btn-sheets {
-            background: #1A73E8; color: white; font-size: 13px;
-            padding: 8px 16px; border-radius: 8px;
-        }
-        .btn-sheets:hover { background: #1557B0; }
+        /* ── Mensajes ── */
+        .error-box{background:var(--rojo-light);color:var(--rojo);border:1px solid #FECACA;border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:14px}
+        .ok-box{background:var(--verde-light);color:var(--verde);border:1px solid #BBF7D0;border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:14px}
 
-        .error-box {
-            background: #FEF2F2; color: var(--rojo);
-            border: 1px solid #FECACA; border-radius: 8px;
-            padding: 10px 12px; font-size: 13px; margin-bottom: 14px;
-        }
+        /* ── Badges de estado ── */
+        .badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600}
+        .s-pendiente  {background:var(--gris-light);color:var(--gris)}
+        .s-en_revision{background:var(--cyan-light);color:var(--cyan)}
+        .s-en_proceso {background:var(--ambar-light);color:var(--ambar)}
+        .s-completado {background:var(--verde-light);color:var(--verde)}
+        .s-cancelado  {background:var(--rojo-light);color:var(--rojo)}
+        .s-respondida {background:var(--verde-light);color:var(--verde)}
+        .s-revisando  {background:var(--ambar-light);color:var(--ambar)}
+        .s-aceptada   {background:var(--cyan-light);color:var(--cyan)}
 
-        /* ── CABECERA ── */
-        .cabecera {
-            background: white; border-bottom: 1px solid #E2E8F0;
-            padding: 0 24px; height: 58px;
-            display: flex; align-items: center; justify-content: space-between;
-            position: sticky; top: 0; z-index: 10;
-            box-shadow: 0 1px 3px rgba(0,0,0,.06);
-        }
-        .cab-logo { display: flex; align-items: center; gap: 8px; font-size: 17px; font-weight: 700; }
-        .cab-right { display: flex; align-items: center; gap: 12px; }
-        .cab-name { font-size: 14px; font-weight: 500; color: #475569; }
+        /* ── Login ── */
+        .login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:linear-gradient(135deg,#1E293B,#2563EB)}
+        .login-box{background:#fff;border-radius:16px;padding:40px;width:100%;max-width:400px;box-shadow:0 20px 40px rgba(0,0,0,.18)}
+        .login-top{text-align:center;margin-bottom:28px}
+        .login-top .ico{font-size:44px;display:block;margin-bottom:10px}
+        .login-top h1{font-size:22px;font-weight:700}
+        .login-top p{color:var(--muted);font-size:14px;margin-top:4px}
 
-        /* ── CONTENIDO ── */
-        .contenido { max-width: 1000px; margin: 0 auto; padding: 28px 24px; }
-        .titulo-pag { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
-        .sub-pag { font-size: 14px; color: #64748B; margin-bottom: 24px; }
-        .fila-top {
-            display: flex; align-items: center; justify-content: space-between;
-            flex-wrap: wrap; gap: 10px; margin-bottom: 24px;
-        }
+        /* ── Cabecera app ── */
+        .cabecera{background:#fff;border-bottom:1px solid var(--borde);padding:0 24px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+        .cab-logo{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700}
+        .cab-right{display:flex;align-items:center;gap:10px}
+        .cab-name{font-size:14px;font-weight:500;color:#475569}
 
-        /* ── BADGES ── */
-        .badge {
-            display: inline-flex; align-items: center;
-            padding: 3px 10px; border-radius: 20px;
-            font-size: 12px; font-weight: 600;
-        }
-        .s-pendiente   { background:#F1F5F9; color:#64748B; }
-        .s-en_revision { background:#ECFEFF; color:#0891B2; }
-        .s-en_proceso  { background:#FFFBEB; color:#D97706; }
-        .s-completado  { background:#F0FDF4; color:#16A34A; }
-        .s-cancelado   { background:#FEF2F2; color:#DC2626; }
+        /* ── Tabs (cliente) ── */
+        .tabs{display:flex;gap:2px;background:var(--gris-light);border-radius:10px;padding:3px;margin-bottom:22px;width:fit-content}
+        .tab-btn{padding:7px 20px;border-radius:8px;font-size:14px;font-weight:500;color:var(--muted);transition:all .15s;background:transparent}
+        .tab-btn.activo{background:#fff;color:var(--texto);box-shadow:0 1px 3px rgba(0,0,0,.1)}
 
-        /* ── TARJETAS DE TRABAJO ── */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-        }
-        .tarjeta {
-            background: white; border-radius: 12px; padding: 18px;
-            border: 1px solid #E2E8F0;
-            box-shadow: 0 1px 3px rgba(0,0,0,.06);
-            transition: box-shadow .15s, transform .1s;
-            display: flex; flex-direction: column; gap: 8px;
-        }
-        .tarjeta:hover { box-shadow: 0 4px 12px rgba(0,0,0,.1); transform: translateY(-1px); }
-        .tarjeta-top { display: flex; justify-content: space-between; align-items: flex-start; }
-        .trabajo-titulo { font-size: 15px; font-weight: 600; color: #1E293B; line-height: 1.4; }
-        .trabajo-desc  { font-size: 13px; color: #64748B; line-height: 1.5; }
-        .trabajo-nota  {
-            font-size: 13px; color: #475569;
-            background: #F8FAFC; border-radius: 6px;
-            padding: 8px 10px; border-left: 3px solid #CBD5E1;
-        }
-        .trabajo-fecha { font-size: 11px; color: #94A3B8; border-top: 1px solid #F1F5F9; padding-top: 8px; }
-        .docs-lista { display: flex; flex-direction: column; gap: 6px; }
-        .doc-enlace {
-            display: flex; align-items: center; gap: 8px; padding: 7px 10px;
-            background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px;
-            text-decoration: none; color: var(--azul); font-size: 13px; font-weight: 500;
-            transition: background .1s;
-        }
-        .doc-enlace:hover { background: #EFF6FF; border-color: #BFDBFE; }
+        /* ── Contenido ── */
+        .contenido{max-width:1100px;margin:0 auto;padding:28px 24px}
+        .titulo-pag{font-size:20px;font-weight:700;margin-bottom:4px}
+        .sub-pag{font-size:14px;color:var(--muted);margin-bottom:20px}
+        .fila-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px}
 
-        /* ── ADMIN: sección por cliente ── */
-        .cliente-seccion { margin-bottom: 36px; }
-        .cliente-cabecera {
-            display: flex; align-items: center; gap: 12px;
-            margin-bottom: 14px; padding-bottom: 12px;
-            border-bottom: 1px solid #E2E8F0;
-        }
-        .cliente-inicial {
-            width: 38px; height: 38px; border-radius: 50%;
-            background: var(--azul); color: white;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700; font-size: 16px; flex-shrink: 0;
-        }
-        .cliente-nom { font-size: 16px; font-weight: 600; }
-        .cliente-email { font-size: 13px; color: #64748B; }
+        /* ── Tabla de trabajos ── */
+        .tabla-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--borde);box-shadow:0 1px 3px rgba(0,0,0,.06)}
+        .tabla{width:100%;border-collapse:collapse;background:#fff;font-size:13px}
+        .tabla th{background:#F8FAFC;padding:10px 14px;text-align:left;font-size:12px;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--borde);white-space:nowrap}
+        .tabla td{padding:11px 14px;border-bottom:1px solid #F1F5F9;vertical-align:middle}
+        .tabla tr:last-child td{border-bottom:none}
+        .tabla tr:hover td{background:#FAFBFC}
+        .doc-link-sm{display:inline-flex;align-items:center;gap:4px;color:var(--azul);font-size:12px;padding:3px 8px;background:var(--azul-light);border-radius:5px;margin:2px}
+        .doc-link-sm:hover{background:#BFDBFE}
+        .sin-datos td{text-align:center;color:var(--muted);padding:28px;font-size:14px}
 
-        /* ── VACÍO ── */
-        .vacio { text-align: center; padding: 60px 20px; color: #94A3B8; grid-column: 1/-1; }
-        .vacio .vacio-ico { font-size: 48px; display: block; margin-bottom: 12px; }
+        /* ── Sección cliente admin ── */
+        .cliente-sec{margin-bottom:32px}
+        .cliente-cab{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--borde)}
+        .cli-ini{width:38px;height:38px;min-width:38px;border-radius:50%;background:var(--azul);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
+        .cli-nom{font-size:15px;font-weight:600}
+        .cli-email{font-size:13px;color:var(--muted)}
 
-        /* ── SPINNER ── */
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .spinner {
-            display: inline-block; width: 18px; height: 18px;
-            border: 2px solid rgba(255,255,255,.3);
-            border-top-color: white; border-radius: 50%;
-            animation: spin .7s linear infinite;
-        }
-        .cargando { text-align: center; padding: 50px; color: #94A3B8; font-size: 14px; }
+        /* ── Tarjetas de solicitud ── */
+        .sol-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+        .sol-card{background:#fff;border-radius:12px;padding:16px;border:1px solid var(--borde);box-shadow:0 1px 3px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:10px}
+        .sol-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+        .sol-id{font-size:12px;color:var(--muted)}.sol-fecha{font-size:11px;color:var(--muted)}
+        .sol-cliente{font-size:13px;font-weight:600;color:var(--texto)}
+        .sol-items-preview{font-size:13px;color:#475569;line-height:1.5}
+        .sol-importe{font-size:15px;font-weight:700;color:var(--verde);background:var(--verde-light);padding:6px 12px;border-radius:8px;display:inline-block}
+        .sol-footer{display:flex;gap:8px;flex-wrap:wrap}
 
-        @media (max-width: 600px) {
-            .grid { grid-template-columns: 1fr; }
-            .contenido { padding: 18px 14px; }
-            .cabecera { padding: 0 14px; }
-            .cab-name { display: none; }
+        /* ── Modal overlay ── */
+        .overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px;backdrop-filter:blur(2px)}
+        .modal{background:#fff;border-radius:14px;width:100%;max-width:560px;box-shadow:0 20px 40px rgba(0,0,0,.15);display:flex;flex-direction:column;max-height:90vh;animation:modalIn .2s ease-out}
+        .modal-lg{max-width:820px}
+        @keyframes modalIn{from{opacity:0;transform:translateY(-16px) scale(.97)}to{opacity:1;transform:none}}
+        .modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid var(--borde);flex-shrink:0}
+        .modal-head h3{font-size:16px;font-weight:700}
+        .modal-close{width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:6px;font-size:14px;background:var(--gris-light);color:var(--muted)}.modal-close:hover{background:#E2E8F0;color:var(--texto)}
+        .modal-body{padding:20px 22px;overflow-y:auto;flex:1}
+        .modal-foot{display:flex;justify-content:flex-end;gap:8px;padding:14px 22px;border-top:1px solid var(--borde);flex-shrink:0}
+
+        /* ── Formulario de solicitud ── */
+        .concepto-fila{display:grid;grid-template-columns:1fr 90px 100px 28px;gap:8px;align-items:center;margin-bottom:8px}
+        .concepto-fila input{font-size:13px;padding:7px 10px}
+        .btn-del-c{color:var(--rojo);font-size:18px;opacity:.7;flex-shrink:0;width:28px;height:28px;display:flex;align-items:center;justify-content:center}.btn-del-c:hover{opacity:1}
+        .conceptos-head{display:grid;grid-template-columns:1fr 90px 100px 28px;gap:8px;margin-bottom:4px}
+        .conceptos-head span{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+
+        /* ── Chat ── */
+        .chat-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:16px;height:500px}
+        .chat-left{overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+        .chat-right{display:flex;flex-direction:column;border:1px solid var(--borde);border-radius:10px;overflow:hidden}
+        .chat-mensajes{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#F8FAFC}
+        .msg{max-width:80%;display:flex;flex-direction:column;gap:3px}
+        .msg-admin{align-self:flex-end;align-items:flex-end}
+        .msg-cliente{align-self:flex-start;align-items:flex-start}
+        .msg-burbuja{padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.5;white-space:pre-wrap}
+        .msg-admin .msg-burbuja{background:var(--azul);color:#fff;border-bottom-right-radius:3px}
+        .msg-cliente .msg-burbuja{background:#fff;color:var(--texto);border:1px solid var(--borde);border-bottom-left-radius:3px}
+        .msg-meta{font-size:11px;color:var(--muted)}
+        .chat-input-area{display:flex;gap:8px;padding:10px;border-top:1px solid var(--borde);background:#fff}
+        .chat-input-area input{flex:1;padding:8px 12px;font-size:13px;border-radius:8px}
+        .chat-sin-msg{text-align:center;color:var(--muted);font-size:13px;padding:20px}
+
+        /* Sección izq del chat (detalles solicitud) */
+        .sol-detalle{background:#F8FAFC;border:1px solid var(--borde);border-radius:10px;padding:14px}
+        .sol-detalle h4{font-size:13px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
+        .items-tabla{width:100%;font-size:13px;border-collapse:collapse}
+        .items-tabla th{text-align:left;font-weight:600;color:var(--muted);padding:4px 8px;border-bottom:1px solid var(--borde);font-size:12px}
+        .items-tabla td{padding:5px 8px;border-bottom:1px solid #F1F5F9}
+        .items-tabla tr:last-child td{border-bottom:none}
+        .respuesta-form{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:14px}
+        .respuesta-form h4{font-size:13px;font-weight:700;color:var(--verde);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
+        .respuesta-form input,.respuesta-form textarea{font-size:13px;padding:8px 10px;margin-bottom:8px}
+
+        /* ── Estados vacíos / Loading ── */
+        .vacio{text-align:center;padding:40px 20px;color:var(--muted)}
+        .vacio .ico{font-size:40px;display:block;margin-bottom:10px}
+        .cargando{text-align:center;padding:40px;color:var(--muted)}
+
+        /* ── Spinner ── */
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+
+        @media(max-width:700px){
+            .chat-layout{grid-template-columns:1fr;height:auto}.chat-right{height:350px}
+            .concepto-fila{grid-template-columns:1fr 70px}.concepto-fila input:nth-child(3){display:none}
+            .contenido{padding:16px 12px}.cabecera{padding:0 14px}.cab-name{display:none}
         }
     </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════
-     PANTALLA: LOGIN
-════════════════════════════════════════════ -->
-<div id="p-login" style="display:none;">
+<!-- ════════ LOGIN ════════ -->
+<div id="p-login" style="display:none">
     <div class="login-wrap">
         <div class="login-box">
             <div class="login-top">
@@ -178,298 +179,559 @@
                 <h1>Portal de Trabajos</h1>
                 <p>Ingresa con tus credenciales</p>
             </div>
-            <div id="err-login" class="error-box" style="display:none;"></div>
-            <label for="inp-email">Correo electrónico</label>
-            <input type="email" id="inp-email" placeholder="tu@email.com" autocomplete="email">
-            <label for="inp-pass">Contraseña</label>
-            <input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password">
-            <button class="btn btn-primary" id="btn-entrar" onclick="entrar()">
-                Iniciar Sesión
-            </button>
+            <div id="err-login" class="error-box" style="display:none"></div>
+            <div class="campo"><label>Correo electrónico</label><input type="email" id="inp-email" placeholder="tu@email.com" autocomplete="email"></div>
+            <div class="campo"><label>Contraseña</label><input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password"></div>
+            <button class="btn btn-primary btn-full" id="btn-entrar" onclick="entrar()">Iniciar Sesión</button>
         </div>
     </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     PANTALLA: CLIENTE
-════════════════════════════════════════════ -->
-<div id="p-cliente" style="display:none;">
+<!-- ════════ VISTA CLIENTE ════════ -->
+<div id="p-cliente" style="display:none">
     <header class="cabecera">
-        <div class="cab-logo">📋 Mis Trabajos</div>
+        <div class="cab-logo">📋 Portal de Trabajos</div>
         <div class="cab-right">
-            <span class="cab-name" id="nombre-cliente"></span>
-            <button class="btn btn-salir" onclick="salir()">Salir</button>
-        </div>
-    </header>
-    <div class="contenido">
-        <div class="titulo-pag" id="saludo-cliente">Mis Trabajos</div>
-        <div class="sub-pag">Estado actualizado de todos tus proyectos</div>
-        <div class="grid" id="grid-cliente">
-            <div class="cargando">Cargando...</div>
-        </div>
-    </div>
-</div>
-
-<!-- ═══════════════════════════════════════════
-     PANTALLA: ADMIN
-════════════════════════════════════════════ -->
-<div id="p-admin" style="display:none;">
-    <header class="cabecera">
-        <div class="cab-logo">📋 Panel de Administración</div>
-        <div class="cab-right">
-            <button class="btn btn-sheets" id="btn-hoja" onclick="abrirHoja()">
-                ✏️ Editar en Google Sheets
-            </button>
-            <button class="btn btn-salir" onclick="salir()">Salir</button>
+            <span class="cab-name" id="nombre-cli"></span>
+            <button class="btn-salir" onclick="salir()">Salir</button>
         </div>
     </header>
     <div class="contenido">
         <div class="fila-top">
             <div>
-                <div class="titulo-pag">Todos los Clientes</div>
-                <div class="sub-pag">Para actualizar estados, usa el botón "Editar en Google Sheets"</div>
+                <div class="titulo-pag" id="saludo-cli">Mis Trabajos</div>
+                <div class="sub-pag">Estado actualizado de tus proyectos</div>
             </div>
         </div>
-        <div id="contenido-admin">
-            <div class="cargando">Cargando...</div>
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn activo" id="tab-trabajos" onclick="cambiarTab('trabajos')">📋 Mis Trabajos</button>
+            <button class="tab-btn" id="tab-solicitudes" onclick="cambiarTab('solicitudes')">💬 Solicitudes</button>
+        </div>
+        <!-- Tab: Trabajos -->
+        <div id="contenido-trabajos">
+            <div id="tabla-trabajos-cli" class="cargando">Cargando...</div>
+        </div>
+        <!-- Tab: Solicitudes -->
+        <div id="contenido-solicitudes" style="display:none">
+            <div class="fila-top">
+                <div>
+                    <div class="titulo-pag" style="font-size:17px">Solicitudes de Presupuesto</div>
+                    <div class="sub-pag">Tus peticiones enviadas al administrador</div>
+                </div>
+                <button class="btn btn-primary btn-sm" onclick="abrirNuevaSolicitud()">＋ Pedir Cotización</button>
+            </div>
+            <div id="lista-sol-cli" class="cargando">Cargando...</div>
         </div>
     </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     AVISO: CONFIGURACIÓN PENDIENTE
-════════════════════════════════════════════ -->
-<div id="p-config" style="display:none;">
-    <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;">
-        <div style="text-align:center;max-width:480px;">
-            <div style="font-size:52px;margin-bottom:16px;">⚙️</div>
-            <h2 style="margin-bottom:10px;font-size:22px;">Configuración pendiente</h2>
-            <p style="color:#64748B;font-size:15px;line-height:1.6;">
-                Abre el archivo <strong>index.html</strong>, busca la línea:<br>
-                <code style="background:#F1F5F9;padding:3px 10px;border-radius:6px;display:inline-block;margin:10px 0;font-size:13px;">const URL_SCRIPT = 'PEGA_AQUI_TU_URL'</code><br>
-                y reemplázala con tu URL de Google Apps Script.<br><br>
-                Revisa el archivo <strong>README.md</strong> para los pasos detallados.
-            </p>
+<!-- ════════ VISTA ADMIN ════════ -->
+<div id="p-admin" style="display:none">
+    <header class="cabecera">
+        <div class="cab-logo">📋 Panel de Administración</div>
+        <div class="cab-right">
+            <button class="btn-sheets" id="btn-hoja" onclick="window.open(urlHoja,'_blank')">✏️ Editar en Google Sheets</button>
+            <button class="btn-salir" onclick="salir()">Salir</button>
+        </div>
+    </header>
+    <div class="contenido">
+        <!-- Tabs admin -->
+        <div class="tabs">
+            <button class="tab-btn activo" id="atab-trabajos" onclick="cambiarTabAdmin('trabajos')">📋 Trabajos</button>
+            <button class="tab-btn" id="atab-solicitudes" onclick="cambiarTabAdmin('solicitudes')">💬 Solicitudes</button>
+        </div>
+        <!-- Tab Trabajos -->
+        <div id="admin-trabajos">
+            <div id="contenido-admin" class="cargando">Cargando...</div>
+        </div>
+        <!-- Tab Solicitudes -->
+        <div id="admin-solicitudes" style="display:none">
+            <div class="fila-top">
+                <div>
+                    <div class="titulo-pag" style="font-size:17px">Solicitudes de Presupuesto</div>
+                    <div class="sub-pag">Todas las peticiones de los clientes</div>
+                </div>
+                <button class="btn btn-ghost btn-sm" onclick="refrescarSolicitudesAdmin()">↻ Actualizar</button>
+            </div>
+            <div id="lista-sol-admin" class="cargando">Cargando...</div>
+        </div>
+    </div>
+</div>
+
+<!-- ════════ MODAL: Nueva Solicitud ════════ -->
+<div id="modal-solicitud" class="overlay" style="display:none" onclick="cerrarSiOverlay(event,'modal-solicitud')">
+    <div class="modal">
+        <div class="modal-head">
+            <h3>💬 Nueva Solicitud de Presupuesto</h3>
+            <button class="modal-close" onclick="cerrarModal('modal-solicitud')">✕</button>
+        </div>
+        <div class="modal-body">
+            <div class="campo">
+                <label>Descripción general <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+                <textarea id="sol-nota" rows="2" placeholder="Describe brevemente lo que necesitas..."></textarea>
+            </div>
+            <div style="margin-bottom:8px;font-size:13px;font-weight:600;color:var(--texto)">Conceptos a presupuestar</div>
+            <div class="conceptos-head">
+                <span>Descripción</span><span>Cantidad</span><span>Unidad</span><span></span>
+            </div>
+            <div id="conceptos-lista"></div>
+            <button class="btn btn-ghost btn-sm" onclick="agregarConcepto()" style="margin-top:4px">＋ Añadir concepto</button>
+            <div id="err-sol" class="error-box" style="display:none;margin-top:12px"></div>
+        </div>
+        <div class="modal-foot">
+            <button class="btn btn-ghost" onclick="cerrarModal('modal-solicitud')">Cancelar</button>
+            <button class="btn btn-primary" id="btn-enviar-sol" onclick="enviarSolicitud()">Enviar Solicitud</button>
+        </div>
+    </div>
+</div>
+
+<!-- ════════ MODAL: Chat ════════ -->
+<div id="modal-chat" class="overlay" style="display:none" onclick="cerrarSiOverlay(event,'modal-chat')">
+    <div class="modal modal-lg">
+        <div class="modal-head">
+            <div>
+                <h3>💬 Solicitud <span id="chat-id-label">#—</span></h3>
+                <div style="margin-top:4px"><span id="chat-estado-badge" class="badge"></span> <span id="chat-cliente-label" style="font-size:13px;color:var(--muted)"></span></div>
+            </div>
+            <button class="modal-close" onclick="cerrarChat()">✕</button>
+        </div>
+        <div class="modal-body" style="padding:16px">
+            <div class="chat-layout">
+                <!-- Columna izq: detalles + formulario respuesta -->
+                <div class="chat-left">
+                    <div class="sol-detalle">
+                        <h4>Items solicitados</h4>
+                        <table class="items-tabla">
+                            <thead><tr><th>Descripción</th><th>Cant.</th><th>Unidad</th></tr></thead>
+                            <tbody id="chat-items-body"></tbody>
+                        </table>
+                        <div id="chat-nota-general" style="display:none;margin-top:10px;font-size:13px;color:var(--muted)"></div>
+                    </div>
+                    <!-- Solo admin: responder -->
+                    <div class="respuesta-form" id="form-respuesta" style="display:none">
+                        <h4>✏️ Responder</h4>
+                        <label>Importe total (€)</label>
+                        <input type="number" id="resp-importe" placeholder="0.00" min="0" step="0.01">
+                        <label>Mensaje para el cliente</label>
+                        <textarea id="resp-nota" rows="3" placeholder="Detalles de tu respuesta..."></textarea>
+                        <button class="btn btn-primary btn-full btn-sm" onclick="enviarRespuesta()">Enviar Respuesta</button>
+                        <div id="err-resp" class="error-box" style="display:none;margin-top:8px"></div>
+                    </div>
+                    <!-- Importe (si ya hay respuesta) -->
+                    <div id="chat-importe-display" style="display:none">
+                        <span id="chat-importe-valor" class="sol-importe"></span>
+                        <div id="chat-nota-admin-display" style="font-size:13px;color:#475569;margin-top:8px"></div>
+                    </div>
+                </div>
+                <!-- Columna der: chat -->
+                <div class="chat-right">
+                    <div class="chat-mensajes" id="chat-mensajes"></div>
+                    <div class="chat-input-area">
+                        <input type="text" id="chat-msg" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter')enviarMensaje()">
+                        <button class="btn btn-primary btn-sm" onclick="enviarMensaje()">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ════════ PANTALLA: Config pendiente ════════ -->
+<div id="p-config" style="display:none">
+    <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px">
+        <div style="text-align:center;max-width:480px">
+            <div style="font-size:52px;margin-bottom:16px">⚙️</div>
+            <h2 style="margin-bottom:10px">Configuración pendiente</h2>
+            <p style="color:var(--muted);line-height:1.6">Abre <strong>index.html</strong> y reemplaza <code style="background:var(--gris-light);padding:2px 8px;border-radius:5px">PEGA_AQUI_TU_URL</code> con tu URL de Google Apps Script.</p>
         </div>
     </div>
 </div>
 
 <script>
 // ════════════════════════════════════════════════
-//  ⚙️  CONFIGURACIÓN — SOLO CAMBIA ESTA LÍNEA:
+//  CONFIGURACIÓN — solo cambia esta línea:
 // ════════════════════════════════════════════════
 const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbze3hMML4H6PxmN_dh5HbO5vC4yPYsX6GTsGJm8dzD1N8ynz0DGTnEMVfbDLeRhWtITIg/exec';
 
+// ════════════════════════════════════════════════
+//  ESTADO GLOBAL
+// ════════════════════════════════════════════════
+let currentUser   = null; // {role, name, clienteId}
+let urlHoja       = '#';
+let chatSolId     = null;
+let chatInterval  = null;
+
+const ESTADOS = {pendiente:'Pendiente',en_revision:'En Revisión',en_proceso:'En Proceso',completado:'Completado',cancelado:'Cancelado',respondida:'Respondida',revisando:'Revisando',aceptada:'Aceptada'};
+const EST_CLASS = {pendiente:'s-pendiente',en_revision:'s-en_revision',en_proceso:'s-en_proceso',completado:'s-completado',cancelado:'s-cancelado',respondida:'s-respondida',revisando:'s-revisando',aceptada:'s-aceptada'};
 
 // ════════════════════════════════════════════════
-//  ESTADO
-// ════════════════════════════════════════════════
-let urlHoja = '#';
-
-const ESTADOS = {
-    pendiente:   'Pendiente',
-    en_revision: 'En Revisión',
-    en_proceso:  'En Proceso',
-    completado:  'Completado',
-    cancelado:   'Cancelado',
-};
-
-// ════════════════════════════════════════════════
-//  MOSTRAR PANTALLAS
+//  UTILIDADES
 // ════════════════════════════════════════════════
 function mostrar(id) {
-    ['p-login','p-cliente','p-admin','p-config'].forEach(p =>
-        document.getElementById(p).style.display = 'none'
-    );
+    ['p-login','p-cliente','p-admin','p-config'].forEach(p => document.getElementById(p).style.display = 'none');
     document.getElementById(id).style.display = 'block';
+}
+function cerrarModal(id)  { document.getElementById(id).style.display = 'none'; }
+function abrirModal(id)   { document.getElementById(id).style.display = 'flex'; }
+function cerrarSiOverlay(e, id) { if (e.target.id === id) cerrarModal(id); }
+function badge(estado)    { const cls = EST_CLASS[estado]||'s-pendiente'; return `<span class="badge ${cls}">${ESTADOS[estado]||estado}</span>`; }
+
+function jsonp(url) {
+    return new Promise((resolve, reject) => {
+        const cb = 'cb' + Date.now();
+        const s  = document.createElement('script');
+        const t  = setTimeout(() => { cleanup(); reject(new Error('Timeout')); }, 20000);
+        function cleanup() { clearTimeout(t); delete window[cb]; s.remove(); }
+        window[cb] = d => { cleanup(); resolve(d); };
+        s.onerror  = () => { cleanup(); reject(new Error('Error de red')); };
+        s.src = url + '&callback=' + cb;
+        document.head.appendChild(s);
+    });
 }
 
 // ════════════════════════════════════════════════
-//  LOGIN
+//  AUTH
 // ════════════════════════════════════════════════
 async function entrar() {
     const email = document.getElementById('inp-email').value.trim();
     const pass  = document.getElementById('inp-pass').value;
     const btn   = document.getElementById('btn-entrar');
     const err   = document.getElementById('err-login');
-
     err.style.display = 'none';
-
-    if (!email || !pass) {
-        err.textContent = 'Por favor ingresa tu correo y contraseña.';
-        err.style.display = 'block';
-        return;
-    }
-
-    btn.innerHTML = '<span class="spinner"></span> Entrando…';
-    btn.disabled  = true;
-
+    if (!email || !pass) { err.textContent='Completa los campos.'; err.style.display='block'; return; }
+    btn.innerHTML = '<span class="spinner"></span> Entrando…'; btn.disabled = true;
     try {
-        const url  = `${URL_SCRIPT}?email=${encodeURIComponent(email)}&pass=${encodeURIComponent(pass)}`;
-        const data = await jsonp(url);
-
-        if (data.error) {
-            err.textContent    = data.error;
-            err.style.display  = 'block';
-        } else if (data.role === 'admin') {
-            urlHoja = data.sheetUrl || '#';
-            mostrarAdmin(data.clients || []);
-        } else if (data.role === 'client') {
-            mostrarCliente(data);
-        }
-    } catch (e) {
-        err.textContent   = 'Error de conexión. Asegúrate de haber desplegado el script en Google Apps Script.';
-        err.style.display = 'block';
-        console.error(e);
+        const data = await jsonp(`${URL_SCRIPT}?email=${encodeURIComponent(email)}&pass=${encodeURIComponent(pass)}`);
+        if (data.error) { err.textContent = data.error; err.style.display = 'block'; }
+        else if (data.role === 'admin')  { urlHoja = data.sheetUrl||'#'; iniciarAdmin(data); }
+        else if (data.role === 'client') { iniciarCliente(data); }
+    } catch(e) {
+        err.textContent = 'Error de conexión. Revisa el despliegue del Apps Script.';
+        err.style.display = 'block'; console.error(e);
     }
-
-    btn.innerHTML = 'Iniciar Sesión';
-    btn.disabled  = false;
-}
-
-// ════════════════════════════════════════════════
-//  JSONP — evita el bloqueo CORS del navegador
-// ════════════════════════════════════════════════
-function jsonp(url) {
-    return new Promise((resolve, reject) => {
-        const cb  = 'cb' + Date.now();
-        const s   = document.createElement('script');
-        const t   = setTimeout(() => { cleanup(); reject(new Error('Timeout')); }, 15000);
-        function cleanup() { clearTimeout(t); delete window[cb]; s.remove(); }
-        window[cb] = data => { cleanup(); resolve(data); };
-        s.onerror  = () => { cleanup(); reject(new Error('Error de red')); };
-        s.src      = url + '&callback=' + cb;
-        document.head.appendChild(s);
-    });
+    btn.innerHTML = 'Iniciar Sesión'; btn.disabled = false;
 }
 
 function salir() {
+    clearInterval(chatInterval); chatInterval = null;
     document.getElementById('inp-email').value = '';
     document.getElementById('inp-pass').value  = '';
     mostrar('p-login');
 }
 
-function abrirHoja() {
-    window.open(urlHoja, '_blank');
-}
-
 // ════════════════════════════════════════════════
 //  VISTA CLIENTE
 // ════════════════════════════════════════════════
-function mostrarCliente(data) {
-    document.getElementById('nombre-cliente').textContent = data.name;
-    document.getElementById('saludo-cliente').textContent = `Hola, ${data.name}`;
-    renderGrid('grid-cliente', data.jobs || []);
+function iniciarCliente(data) {
+    currentUser = { role:'client', name: data.name, clienteId: data.clienteId };
+    document.getElementById('nombre-cli').textContent  = data.name;
+    document.getElementById('saludo-cli').textContent  = `Hola, ${data.name}`;
+    renderTablaCliente('tabla-trabajos-cli', data.trabajos);
+    renderSolicitudesCliente(data.solicitudes || []);
     mostrar('p-cliente');
+}
+
+function cambiarTab(cual) {
+    const tabs = ['trabajos','solicitudes'];
+    tabs.forEach(t => {
+        document.getElementById('tab-' + t).classList.toggle('activo', t === cual);
+        document.getElementById('contenido-' + t).style.display = t === cual ? 'block' : 'none';
+    });
+}
+
+// ════════════════════════════════════════════════
+//  TABLA DE TRABAJOS (dinámica)
+// ════════════════════════════════════════════════
+function renderTablaCliente(containerId, trabajos) {
+    const el = document.getElementById(containerId);
+    el.innerHTML = buildTabla(trabajos);
+}
+
+function buildTabla(trabajos) {
+    if (!trabajos || !trabajos.headers || !trabajos.headers.length) {
+        return `<div class="vacio"><span class="ico">📋</span><p>Define columnas en la fila 1 de la hoja "Trabajos".</p></div>`;
+    }
+    const {headers, rows} = trabajos;
+    let h = `<div class="tabla-wrap"><table class="tabla"><thead><tr>`;
+    headers.forEach(hdr => h += `<th>${hdr}</th>`);
+    h += `</tr></thead><tbody>`;
+    if (!rows.length) {
+        h += `<tr class="sin-datos"><td colspan="${headers.length}">Sin trabajos registrados aún.</td></tr>`;
+    } else {
+        rows.forEach(row => {
+            h += '<tr>';
+            row.forEach((val, i) => {
+                const hdr   = (headers[i]||'').toLowerCase();
+                const isEst = hdr.includes('estado');
+                const isDoc = hdr.includes('doc');
+                let display = val || '';
+                if (isEst && val) {
+                    display = badge(val.toLowerCase().replace(/ /g,'_'));
+                } else if (isDoc && val) {
+                    display = val.split(',').filter(Boolean).map((u,n) =>
+                        `<a href="${u.trim()}" target="_blank" class="doc-link-sm">📎 Doc ${n+1}</a>`
+                    ).join('');
+                }
+                h += `<td>${display}</td>`;
+            });
+            h += '</tr>';
+        });
+    }
+    h += '</tbody></table></div>';
+    return h;
+}
+
+// ════════════════════════════════════════════════
+//  SOLICITUDES — cliente
+// ════════════════════════════════════════════════
+function renderSolicitudesCliente(solicitudes) {
+    const el = document.getElementById('lista-sol-cli');
+    if (!solicitudes.length) {
+        el.innerHTML = `<div class="vacio"><span class="ico">💬</span><p>Aún no has enviado ninguna solicitud.</p></div>`;
+        return;
+    }
+    el.innerHTML = `<div class="sol-grid">${solicitudes.map(s => buildSolCard(s, false)).join('')}</div>`;
+}
+
+function buildSolCard(s, isAdmin) {
+    let items = [];
+    try { items = JSON.parse(s.items) || []; } catch(e) {}
+    const preview = items.slice(0,3).map(it => `• ${it.desc||''}${it.cant ? ' ('+it.cant+')' : ''}`).join('<br>') + (items.length > 3 ? `<br><em>+${items.length-3} más…</em>` : '');
+    const importe = s.importe ? `<div class="sol-importe">💰 ${s.importe} €</div>` : '';
+    const cliente = isAdmin ? `<div class="sol-cliente">👤 ${s.clienteNombre}</div>` : '';
+    return `
+    <div class="sol-card">
+        <div class="sol-card-top">
+            <div><span class="sol-id">Solicitud #${s.id}</span>${cliente}</div>
+            ${badge(s.estado)}
+        </div>
+        <div class="sol-items-preview">${preview || '<em style="color:var(--muted)">Sin conceptos</em>'}</div>
+        ${importe}
+        ${s.notaAdmin ? `<div style="font-size:13px;color:#475569;background:var(--verde-light);padding:8px 10px;border-radius:7px">💬 ${s.notaAdmin}</div>` : ''}
+        <div class="sol-footer">
+            <span class="sol-fecha">📅 ${s.fecha}</span>
+            <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="abrirChat('${s.id}',${JSON.stringify(s.items||'[]').replace(/'/g,"\\'")},'${s.estado}','${s.clienteNombre||''}','${s.importe||''}','${(s.notaAdmin||'').replace(/'/g,"\\'")}')">
+                💬 Chat
+            </button>
+        </div>
+    </div>`;
+}
+
+// ── Nueva Solicitud ──
+function abrirNuevaSolicitud() {
+    document.getElementById('conceptos-lista').innerHTML = '';
+    document.getElementById('sol-nota').value = '';
+    document.getElementById('err-sol').style.display = 'none';
+    agregarConcepto();
+    abrirModal('modal-solicitud');
+}
+
+function agregarConcepto() {
+    const lista = document.getElementById('conceptos-lista');
+    const div   = document.createElement('div');
+    div.className = 'concepto-fila';
+    div.innerHTML = `
+        <input type="text" placeholder="Ej: Impresión A4 color" class="c-desc">
+        <input type="number" placeholder="100" min="1" class="c-cant">
+        <input type="text" placeholder="unidades" class="c-unidad">
+        <button class="btn-del-c" onclick="this.closest('.concepto-fila').remove()">✕</button>`;
+    lista.appendChild(div);
+}
+
+async function enviarSolicitud() {
+    const filas = document.querySelectorAll('.concepto-fila');
+    const items = [];
+    filas.forEach(f => {
+        const desc = f.querySelector('.c-desc').value.trim();
+        const cant = f.querySelector('.c-cant').value.trim();
+        const uni  = f.querySelector('.c-unidad').value.trim();
+        if (desc) items.push({desc, cant, uni});
+    });
+    const err = document.getElementById('err-sol');
+    if (!items.length) { err.textContent='Agrega al menos un concepto.'; err.style.display='block'; return; }
+
+    const btn = document.getElementById('btn-enviar-sol');
+    btn.innerHTML = '<span class="spinner" style="border-top-color:white"></span> Enviando…'; btn.disabled = true;
+
+    try {
+        const nota = document.getElementById('sol-nota').value.trim();
+        const url  = `${URL_SCRIPT}?action=solicitar&clienteId=${currentUser.clienteId}&clienteNombre=${encodeURIComponent(currentUser.name)}&items=${encodeURIComponent(JSON.stringify(items))}&nota=${encodeURIComponent(nota)}`;
+        const res  = await jsonp(url);
+        if (res.success) {
+            cerrarModal('modal-solicitud');
+            await refrescarSolicitudesCliente();
+            cambiarTab('solicitudes');
+        } else {
+            err.textContent = res.error || 'Error al enviar.'; err.style.display = 'block';
+        }
+    } catch(e) { err.textContent='Error de conexión.'; err.style.display='block'; }
+    btn.innerHTML = 'Enviar Solicitud'; btn.disabled = false;
+}
+
+async function refrescarSolicitudesCliente() {
+    try {
+        const data = await jsonp(`${URL_SCRIPT}?action=solicitudes&clienteId=${currentUser.clienteId}&role=client`);
+        renderSolicitudesCliente(data.solicitudes || []);
+    } catch(e) {}
 }
 
 // ════════════════════════════════════════════════
 //  VISTA ADMIN
 // ════════════════════════════════════════════════
-function mostrarAdmin(clientes) {
-    const cont = document.getElementById('contenido-admin');
-
-    if (!clientes.length) {
-        cont.innerHTML = `<div class="vacio">
-            <span class="vacio-ico">👤</span>
-            <p>Aún no hay clientes. Agrégalos en Google Sheets.</p>
-        </div>`;
-        mostrar('p-admin');
-        return;
-    }
-
-    cont.innerHTML = clientes.map(c => {
-        const ini = (c.name || '?').charAt(0).toUpperCase();
-        const trabajos = c.jobs && c.jobs.length
-            ? `<div class="grid">${c.jobs.map(tarjetaHTML).join('')}</div>`
-            : `<p style="color:#94A3B8;font-size:14px;padding:8px 0">Sin trabajos aún.</p>`;
-        return `
-        <div class="cliente-seccion">
-            <div class="cliente-cabecera">
-                <div class="cliente-inicial">${ini}</div>
-                <div>
-                    <div class="cliente-nom">${c.name}</div>
-                    <div class="cliente-email">${c.email}</div>
-                </div>
-            </div>
-            ${trabajos}
-        </div>`;
-    }).join('');
-
+function iniciarAdmin(data) {
+    currentUser = {role:'admin', name:'Admin'};
+    renderAdminTrabajos(data.clients || []);
+    renderAdminSolicitudes(data.solicitudes || []);
     mostrar('p-admin');
 }
 
-// ════════════════════════════════════════════════
-//  RENDER: GRID DE TRABAJOS
-// ════════════════════════════════════════════════
-function renderGrid(id, trabajos) {
-    const grid = document.getElementById(id);
-    if (!trabajos.length) {
-        grid.innerHTML = `<div class="vacio">
-            <span class="vacio-ico">📂</span>
-            <p>No hay trabajos registrados aún.</p>
-        </div>`;
-        return;
-    }
-    grid.innerHTML = trabajos.map(tarjetaHTML).join('');
+function cambiarTabAdmin(cual) {
+    ['trabajos','solicitudes'].forEach(t => {
+        document.getElementById('atab-' + t).classList.toggle('activo', t === cual);
+        document.getElementById('admin-' + t).style.display = t === cual ? 'block' : 'none';
+    });
 }
 
-function tarjetaHTML(t) {
-    const cls   = `s-${t.status}`;
-    const label = ESTADOS[t.status] || t.status;
+function renderAdminTrabajos(clients) {
+    const el = document.getElementById('contenido-admin');
+    if (!clients.length) { el.innerHTML = `<div class="vacio"><span class="ico">👤</span><p>Sin clientes aún. Agrégalos en Google Sheets.</p></div>`; return; }
+    el.innerHTML = clients.map(c => `
+        <div class="cliente-sec">
+            <div class="cliente-cab">
+                <div class="cli-ini">${(c.name||'?').charAt(0).toUpperCase()}</div>
+                <div><div class="cli-nom">${c.name}</div><div class="cli-email">${c.email}</div></div>
+            </div>
+            ${buildTabla(c.trabajos)}
+        </div>`).join('');
+}
 
-    const nota  = t.note
-        ? `<div class="trabajo-nota">💬 ${t.note}</div>`
-        : '';
+function renderAdminSolicitudes(solicitudes) {
+    const el = document.getElementById('lista-sol-admin');
+    if (!solicitudes.length) { el.innerHTML = `<div class="vacio"><span class="ico">💬</span><p>No hay solicitudes aún.</p></div>`; return; }
+    el.innerHTML = `<div class="sol-grid">${solicitudes.map(s => buildSolCard(s, true)).join('')}</div>`;
+}
 
-    const docs  = (t.docs && t.docs.length)
-        ? `<div class="docs-lista">
-            ${t.docs.filter(Boolean).map((d, i) => {
-                const icono = d.includes('drive.google')  ? '📄' :
-                              d.includes('youtube.com')   ? '🎬' :
-                              d.includes('.pdf')          ? '📄' :
-                              d.includes('.jpg') || d.includes('.png') || d.includes('.jpeg') ? '🖼️' :
-                              '📎';
-                const nombre = d.split('/').pop().split('?')[0] || `Archivo ${i+1}`;
-                return `<a href="${d}" target="_blank" class="doc-enlace">${icono} ${nombre}</a>`;
-            }).join('')}
-           </div>`
-        : '';
+async function refrescarSolicitudesAdmin() {
+    try {
+        const data = await jsonp(`${URL_SCRIPT}?action=solicitudes&role=admin`);
+        renderAdminSolicitudes(data.solicitudes || []);
+    } catch(e) {}
+}
 
-    const fecha = t.date
-        ? `<div class="trabajo-fecha">Actualizado: ${t.date}</div>`
-        : '';
+// ════════════════════════════════════════════════
+//  CHAT
+// ════════════════════════════════════════════════
+function abrirChat(solId, itemsJson, estado, clienteNombre, importe, notaAdmin) {
+    chatSolId = solId;
+    clearInterval(chatInterval);
 
-    return `
-    <div class="tarjeta">
-        <div class="tarjeta-top">
-            <span class="badge ${cls}">${label}</span>
-        </div>
-        <div class="trabajo-titulo">${t.title}</div>
-        ${t.description ? `<div class="trabajo-desc">${t.description}</div>` : ''}
-        ${nota}
-        ${docs}
-        ${fecha}
-    </div>`;
+    // Cabecera
+    document.getElementById('chat-id-label').textContent    = '#' + solId;
+    document.getElementById('chat-estado-badge').className  = 'badge ' + (EST_CLASS[estado]||'s-pendiente');
+    document.getElementById('chat-estado-badge').textContent = ESTADOS[estado] || estado;
+    document.getElementById('chat-cliente-label').textContent = clienteNombre ? '👤 ' + clienteNombre : '';
+
+    // Items
+    let items = [];
+    try { items = JSON.parse(itemsJson) || []; } catch(e) {}
+    const tbody = document.getElementById('chat-items-body');
+    tbody.innerHTML = items.length
+        ? items.map(it => `<tr><td>${it.desc||''}</td><td>${it.cant||''}</td><td>${it.uni||''}</td></tr>`).join('')
+        : '<tr><td colspan="3" style="color:var(--muted);text-align:center">Sin conceptos</td></tr>';
+
+    // Formulario admin / display importe
+    const esAdmin = currentUser && currentUser.role === 'admin';
+    document.getElementById('form-respuesta').style.display        = esAdmin && estado !== 'respondida' ? 'block' : 'none';
+    document.getElementById('chat-importe-display').style.display  = importe ? 'block' : 'none';
+    if (importe) {
+        document.getElementById('chat-importe-valor').textContent     = '💰 ' + importe + ' €';
+        document.getElementById('chat-nota-admin-display').textContent = notaAdmin || '';
+    }
+    document.getElementById('resp-importe').value = '';
+    document.getElementById('resp-nota').value    = '';
+    document.getElementById('err-resp').style.display = 'none';
+    document.getElementById('chat-msg').value = '';
+
+    cargarChat();
+    chatInterval = setInterval(cargarChat, 15000); // refresca cada 15s
+    abrirModal('modal-chat');
+}
+
+async function cargarChat() {
+    if (!chatSolId) return;
+    try {
+        const data = await jsonp(`${URL_SCRIPT}?action=chat&solicitudId=${chatSolId}`);
+        renderMensajes(data.mensajes || []);
+    } catch(e) {}
+}
+
+function renderMensajes(mensajes) {
+    const el = document.getElementById('chat-mensajes');
+    if (!mensajes.length) {
+        el.innerHTML = '<div class="chat-sin-msg">Aún no hay mensajes. ¡Empieza la conversación!</div>';
+        return;
+    }
+    el.innerHTML = mensajes.map(m => {
+        const tipo = (m.tipo || 'cliente');
+        const cls  = tipo === 'admin' ? 'msg-admin' : 'msg-cliente';
+        return `<div class="msg ${cls}">
+            <div class="msg-burbuja">${m.mensaje.replace(/\n/g,'<br>')}</div>
+            <div class="msg-meta">${m.autor} · ${m.fecha}</div>
+        </div>`;
+    }).join('');
+    el.scrollTop = el.scrollHeight;
+}
+
+async function enviarMensaje() {
+    const inp = document.getElementById('chat-msg');
+    const msg = inp.value.trim();
+    if (!msg || !chatSolId) return;
+    const tipo  = (currentUser && currentUser.role === 'admin') ? 'admin' : 'cliente';
+    const autor = currentUser ? currentUser.name : 'Cliente';
+    inp.value = '';
+    try {
+        await jsonp(`${URL_SCRIPT}?action=mensaje&solicitudId=${chatSolId}&tipo=${tipo}&autor=${encodeURIComponent(autor)}&mensaje=${encodeURIComponent(msg)}`);
+        await cargarChat();
+    } catch(e) {}
+}
+
+async function enviarRespuesta() {
+    const importe = document.getElementById('resp-importe').value.trim();
+    const nota    = document.getElementById('resp-nota').value.trim();
+    const err     = document.getElementById('err-resp');
+    if (!importe && !nota) { err.textContent='Escribe un importe o mensaje.'; err.style.display='block'; return; }
+    err.style.display = 'none';
+    try {
+        const res = await jsonp(`${URL_SCRIPT}?action=responder&solicitudId=${chatSolId}&importe=${encodeURIComponent(importe)}&nota=${encodeURIComponent(nota)}`);
+        if (res.success) {
+            document.getElementById('form-respuesta').style.display = 'none';
+            if (importe) {
+                document.getElementById('chat-importe-display').style.display = 'block';
+                document.getElementById('chat-importe-valor').textContent = '💰 ' + importe + ' €';
+                document.getElementById('chat-nota-admin-display').textContent = nota;
+            }
+            await cargarChat();
+            await refrescarSolicitudesAdmin();
+        }
+    } catch(e) { err.textContent='Error al enviar.'; err.style.display='block'; }
+}
+
+function cerrarChat() {
+    clearInterval(chatInterval); chatInterval = null;
+    chatSolId = null;
+    cerrarModal('modal-chat');
 }
 
 // ════════════════════════════════════════════════
 //  INICIO
 // ════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-    // Enter en cualquier campo → intentar login
     ['inp-email','inp-pass'].forEach(id => {
-        document.getElementById(id).addEventListener('keydown', e => {
-            if (e.key === 'Enter') entrar();
-        });
+        document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') entrar(); });
     });
-
-    // Detectar si la URL está configurada
-    if (URL_SCRIPT === 'PEGA_AQUI_TU_URL') {
-        mostrar('p-config');
-    } else {
-        mostrar('p-login');
-    }
+    if (URL_SCRIPT === 'PEGA_AQUI_TU_URL') mostrar('p-config');
+    else mostrar('p-login');
 });
 </script>
 </body>
