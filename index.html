@@ -210,9 +210,15 @@
                 <div class="sub-pag">Estado actualizado de tus proyectos</div>
             </div>
         </div>
-        <div class="tabs">
-            <button class="tab-btn activo" id="tab-trabajos" onclick="cambiarTab('trabajos')">📋 Mis Trabajos</button>
-            <button class="tab-btn" id="tab-solicitudes" onclick="cambiarTab('solicitudes')">💬 Solicitudes</button>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:6px">
+            <div class="tabs" style="margin-bottom:0">
+                <button class="tab-btn activo" id="tab-trabajos" onclick="cambiarTab('trabajos')">📋 Mis Trabajos</button>
+                <button class="tab-btn" id="tab-solicitudes" onclick="cambiarTab('solicitudes')">💬 Solicitudes</button>
+            </div>
+            <span id="poll-indicator" style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px">
+                <span style="display:inline-block;width:6px;height:6px;background:var(--verde);border-radius:50%;animation:pulseDot 1.5s ease-in-out infinite alternate"></span>
+                En vivo
+            </span>
         </div>
         <div id="contenido-trabajos">
             <div id="tabla-trabajos-cli" class="cargando">Cargando...</div>
@@ -240,9 +246,15 @@
         </div>
     </header>
     <div class="contenido">
-        <div class="tabs">
-            <button class="tab-btn activo" id="atab-trabajos" onclick="cambiarTabAdmin('trabajos')">📋 Trabajos</button>
-            <button class="tab-btn" id="atab-solicitudes" onclick="cambiarTabAdmin('solicitudes')">💬 Solicitudes</button>
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:6px">
+            <div class="tabs" style="margin-bottom:0">
+                <button class="tab-btn activo" id="atab-trabajos" onclick="cambiarTabAdmin('trabajos')">📋 Trabajos</button>
+                <button class="tab-btn" id="atab-solicitudes" onclick="cambiarTabAdmin('solicitudes')">💬 Solicitudes</button>
+            </div>
+            <span id="poll-indicator" style="font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px">
+                <span style="display:inline-block;width:6px;height:6px;background:var(--verde);border-radius:50%;animation:pulseDot 1.5s ease-in-out infinite alternate"></span>
+                En vivo
+            </span>
         </div>
         <!-- Tab Trabajos -->
         <div id="admin-trabajos">
@@ -477,6 +489,7 @@ function inicializarEstadosSolicitudes(solicitudes) {
 
 // ── Detectar cambios y mostrar notificaciones ──
 function detectarCambiosSolicitudes(solicitudes, esAdmin) {
+    if (!solicitudes || !solicitudes.length) return; // lista vacia = no actualizar
     var yaTeniaData = Object.keys(_lastSolEstados).length > 0;
     solicitudes.forEach(function(s) {
         var id         = String(s.id);
@@ -540,11 +553,13 @@ function iniciarPolling() {
         if (!currentUser || _pollingActivo) return;
 
         var url, esAdmin;
+        // IMPORTANTE: &_t=timestamp evita que Google Apps Script cachee la respuesta
+        var ts = '&_t=' + Date.now();
         if (currentUser.role === 'client') {
-            url     = URL_SCRIPT + '?action=solicitudes&clienteId=' + encodeURIComponent(currentUser.clienteId) + '&role=client';
+            url     = URL_SCRIPT + '?action=solicitudes&clienteId=' + encodeURIComponent(currentUser.clienteId) + '&role=client' + ts;
             esAdmin = false;
         } else if (currentUser.role === 'admin') {
-            url     = URL_SCRIPT + '?action=solicitudes&role=admin';
+            url     = URL_SCRIPT + '?action=solicitudes&role=admin' + ts;
             esAdmin = true;
         } else {
             return;
@@ -553,15 +568,30 @@ function iniciarPolling() {
         _pollingActivo = true;
         jsonp(url)
             .then(function(data) {
-                var lista = (data && data.solicitudes) ? data.solicitudes : [];
+                // Si la respuesta es un error o viene vacia, no actualizar estado
+                if (!data || data.error || !data.solicitudes) {
+                    console.warn('[Polling] Respuesta inesperada:', data);
+                    return;
+                }
+                var lista = data.solicitudes;
                 detectarCambiosSolicitudes(lista, esAdmin);
                 if (esAdmin) {
                     renderAdminSolicitudes(lista);
                 } else {
                     renderSolicitudesCliente(lista);
                 }
+                // Actualizar indicador de ultima sincronizacion
+                var indEl = document.getElementById('poll-indicator');
+                if (indEl) {
+                    var ahora = new Date();
+                    indEl.textContent = 'Actualizado ' + ahora.getHours() + ':' +
+                        String(ahora.getMinutes()).padStart(2,'0') + ':' +
+                        String(ahora.getSeconds()).padStart(2,'0');
+                }
             })
-            .catch(function() { /* fallo silencioso */ })
+            .catch(function(err) {
+                console.warn('[Polling] Error de red:', err);
+            })
             .then(function() { _pollingActivo = false; }); // siempre libera el guard
     }, 5000);
 }
