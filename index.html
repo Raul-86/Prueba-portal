@@ -156,6 +156,18 @@
         @keyframes spin{to{transform:rotate(360deg)}}
         .spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
 
+        /* ── Toast de notificacion ── */
+        .toast{position:fixed;top:70px;right:20px;z-index:400;background:#1E293B;color:#fff;padding:13px 18px 13px 14px;border-radius:10px;font-size:13px;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.25);animation:toastIn .3s ease-out;max-width:320px;display:flex;align-items:flex-start;gap:10px;border-left:4px solid var(--verde)}
+        .toast-ico{font-size:18px;flex-shrink:0}
+        .toast-msg{line-height:1.4}
+        @keyframes toastIn{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+        @keyframes toastOut{from{opacity:1;transform:none}to{opacity:0;transform:translateX(30px)}}
+        .toast-salir{animation:toastOut .3s ease-in forwards}
+
+        /* ── Punto de notificacion en tab ── */
+        .notif-dot{display:inline-block;width:8px;height:8px;background:var(--rojo);border-radius:50%;margin-left:5px;vertical-align:middle;animation:pulseDot 1s ease-in-out infinite alternate}
+        @keyframes pulseDot{from{opacity:1;transform:scale(1)}to{opacity:.5;transform:scale(.7)}}
+
         @media(max-width:760px){
             .chat-layout{grid-template-columns:1fr;height:auto}.chat-right{height:320px}
             .concepto-fila{grid-template-columns:1fr 70px 28px}.concepto-fila input:nth-child(3){display:none}
@@ -367,7 +379,9 @@ var currentUser  = null;
 var urlHoja      = '#';
 var chatSolId    = null;
 var chatInterval = null;
-var _solMap      = {}; // almacen de solicitudes por ID (evita escaping en onclick)
+var solInterval  = null;  // refresco automatico de solicitudes
+var _solMap      = {};    // almacen de solicitudes por ID (evita escaping en onclick)
+var _lastSolEstados = {}; // ultimo estado conocido de cada solicitud (para detectar cambios)
 
 var ESTADOS = {
     pendiente:'Pendiente', en_revision:'En Revision', en_proceso:'En Proceso',
@@ -439,6 +453,95 @@ function filtrarTabla(tabla) {
     });
 }
 
+// ── Toast de notificacion ──
+function mostrarToast(ico, msg) {
+    var t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = '<span class="toast-ico">' + ico + '</span><span class="toast-msg">' + msg + '</span>';
+    document.body.appendChild(t);
+    setTimeout(function() {
+        t.classList.add('toast-salir');
+        setTimeout(function() { if (t.parentNode) t.remove(); }, 320);
+    }, 5000);
+}
+
+// ── Guardar estado inicial de solicitudes (sin disparar notificaciones) ──
+function inicializarEstadosSolicitudes(solicitudes) {
+    solicitudes.forEach(function(s) {
+        _lastSolEstados[String(s.id)] = { estado: s.estado, importe: s.importe || '' };
+    });
+}
+
+// ── Detectar cambios y mostrar notificaciones ──
+function detectarCambiosSolicitudes(solicitudes, esAdmin) {
+    var yaTeniaData = Object.keys(_lastSolEstados).length > 0;
+    solicitudes.forEach(function(s) {
+        var prev = _lastSolEstados[String(s.id)];
+        if (!prev) {
+            // Solicitud nueva
+            if (yaTeniaData && esAdmin) {
+                mostrarToast('🆕', 'Nueva solicitud de <strong>' + s.clienteNombre + '</strong> (#' + s.id + ')');
+                ponerBadgeTab('atab-solicitudes');
+            }
+        } else {
+            if (!esAdmin) {
+                // Cliente: detectar cotizacion recibida
+                if (s.importe && s.importe !== prev.importe) {
+                    mostrarToast('💰', 'Solicitud <strong>#' + s.id + '</strong> tiene una cotizacion: <strong>' + s.importe + ' euros</strong>');
+                    ponerBadgeTab('tab-solicitudes');
+                } else if (s.estado !== prev.estado) {
+                    mostrarToast('📋', 'Solicitud <strong>#' + s.id + '</strong>: estado actualizado a <strong>' + (ESTADOS[s.estado] || s.estado) + '</strong>');
+                    ponerBadgeTab('tab-solicitudes');
+                }
+            } else {
+                // Admin: detectar nueva solicitud (no hay prev)
+                // (ya cubierto arriba)
+            }
+        }
+        _lastSolEstados[String(s.id)] = { estado: s.estado, importe: s.importe || '' };
+    });
+}
+
+function ponerBadgeTab(tabId) {
+    var tabEl = document.getElementById(tabId);
+    if (tabEl && !tabEl.querySelector('.notif-dot')) {
+        var dot = document.createElement('span');
+        dot.className = 'notif-dot';
+        tabEl.appendChild(dot);
+    }
+}
+
+function quitarBadgeTab(tabId) {
+    var tabEl = document.getElementById(tabId);
+    if (tabEl) {
+        var dot = tabEl.querySelector('.notif-dot');
+        if (dot) dot.remove();
+    }
+}
+
+// ── Polling automatico de solicitudes cada 5 segundos ──
+function iniciarPolling() {
+    if (solInterval) clearInterval(solInterval);
+    solInterval = setInterval(async function() {
+        if (!currentUser) return;
+        try {
+            if (currentUser.role === 'client') {
+                var data = await jsonp(
+                    URL_SCRIPT + '?action=solicitudes&clienteId=' + currentUser.clienteId + '&role=client'
+                );
+                var lista = data.solicitudes || [];
+                detectarCambiosSolicitudes(lista, false);
+                renderSolicitudesCliente(lista);
+            } else if (currentUser.role === 'admin') {
+                var data = await jsonp(URL_SCRIPT + '?action=solicitudes&role=admin');
+                var lista = data.solicitudes || [];
+                detectarCambiosSolicitudes(lista, true);
+                renderAdminSolicitudes(lista);
+            }
+        } catch(e) {}
+    }, 5000);
+}
+
 // ════════════════════════════════════════════════
 //  AUTH
 // ════════════════════════════════════════════════
@@ -467,7 +570,8 @@ async function entrar() {
 
 function salir() {
     clearInterval(chatInterval); chatInterval = null;
-    chatSolId = null; _solMap = {};
+    clearInterval(solInterval);  solInterval  = null;
+    chatSolId = null; _solMap = {}; _lastSolEstados = {};
     document.getElementById('inp-email').value = '';
     document.getElementById('inp-pass').value  = '';
     mostrar('p-login');
@@ -481,8 +585,11 @@ function iniciarCliente(data) {
     document.getElementById('nombre-cli').textContent = data.name;
     document.getElementById('saludo-cli').textContent = 'Hola, ' + data.name;
     document.getElementById('tabla-trabajos-cli').innerHTML = buildTablaTrabajos(data.trabajos, false);
-    renderSolicitudesCliente(data.solicitudes || []);
+    var soles = data.solicitudes || [];
+    inicializarEstadosSolicitudes(soles); // guardar estado inicial sin notificar
+    renderSolicitudesCliente(soles);
     mostrar('p-cliente');
+    iniciarPolling(); // refresco automatico cada 5 seg
 }
 
 function cambiarTab(cual) {
@@ -490,6 +597,7 @@ function cambiarTab(cual) {
         document.getElementById('tab-' + t).classList.toggle('activo', t === cual);
         document.getElementById('contenido-' + t).style.display = t === cual ? 'block' : 'none';
     });
+    if (cual === 'solicitudes') quitarBadgeTab('tab-solicitudes');
 }
 
 // ════════════════════════════════════════════════
@@ -681,8 +789,11 @@ async function refrescarSolicitudesCliente() {
 function iniciarAdmin(data) {
     currentUser = { role:'admin', name:'Admin' };
     renderAdminTrabajos(data.clients || []);
-    renderAdminSolicitudes(data.solicitudes || []);
+    var soles = data.solicitudes || [];
+    inicializarEstadosSolicitudes(soles); // guardar estado inicial sin notificar
+    renderAdminSolicitudes(soles);
     mostrar('p-admin');
+    iniciarPolling(); // refresco automatico cada 5 seg
 }
 
 function cambiarTabAdmin(cual) {
@@ -690,6 +801,7 @@ function cambiarTabAdmin(cual) {
         document.getElementById('atab-' + t).classList.toggle('activo', t === cual);
         document.getElementById('admin-' + t).style.display = t === cual ? 'block' : 'none';
     });
+    if (cual === 'solicitudes') quitarBadgeTab('atab-solicitudes');
 }
 
 // Admin: tabla plana con TODOS los trabajos de todos los clientes
@@ -791,7 +903,7 @@ function abrirChat(solId) {
     document.getElementById('chat-mensajes').innerHTML = '<div class="chat-sin-msg">Cargando mensajes...</div>';
 
     cargarChat();
-    chatInterval = setInterval(cargarChat, 15000); // refresca cada 15 segundos
+    chatInterval = setInterval(cargarChat, 5000); // refresca cada 5 segundos
     abrirModal('modal-chat');
 }
 
