@@ -468,7 +468,10 @@ function mostrarToast(ico, msg) {
 // ── Guardar estado inicial de solicitudes (sin disparar notificaciones) ──
 function inicializarEstadosSolicitudes(solicitudes) {
     solicitudes.forEach(function(s) {
-        _lastSolEstados[String(s.id)] = { estado: s.estado, importe: s.importe || '' };
+        _lastSolEstados[String(s.id)] = {
+            estado:  String(s.estado  || ''),
+            importe: String(s.importe || '').trim()
+        };
     });
 }
 
@@ -476,29 +479,36 @@ function inicializarEstadosSolicitudes(solicitudes) {
 function detectarCambiosSolicitudes(solicitudes, esAdmin) {
     var yaTeniaData = Object.keys(_lastSolEstados).length > 0;
     solicitudes.forEach(function(s) {
-        var prev = _lastSolEstados[String(s.id)];
+        var id         = String(s.id);
+        var prev       = _lastSolEstados[id];
+        var impActual  = String(s.importe || '').trim();
+        var estActual  = String(s.estado  || '');
+
         if (!prev) {
-            // Solicitud nueva
+            // Solicitud nueva (solo notifica al admin, no en la carga inicial)
             if (yaTeniaData && esAdmin) {
-                mostrarToast('🆕', 'Nueva solicitud de <strong>' + s.clienteNombre + '</strong> (#' + s.id + ')');
+                mostrarToast('🆕', 'Nueva solicitud de <strong>' + esc(s.clienteNombre) + '</strong> (#' + id + ')');
                 ponerBadgeTab('atab-solicitudes');
             }
         } else {
+            var impPrev = String(prev.importe || '').trim();
+            var estPrev = String(prev.estado  || '');
+
             if (!esAdmin) {
-                // Cliente: detectar cotizacion recibida
-                if (s.importe && s.importe !== prev.importe) {
-                    mostrarToast('💰', 'Solicitud <strong>#' + s.id + '</strong> tiene una cotizacion: <strong>' + s.importe + ' euros</strong>');
+                // Cliente: cotizacion recibida (importe nuevo o estado cambia a respondida)
+                if (impActual && impActual !== impPrev) {
+                    mostrarToast('💰', 'Solicitud <strong>#' + id + '</strong> cotizada: <strong>' + esc(impActual) + ' euros</strong>');
                     ponerBadgeTab('tab-solicitudes');
-                } else if (s.estado !== prev.estado) {
-                    mostrarToast('📋', 'Solicitud <strong>#' + s.id + '</strong>: estado actualizado a <strong>' + (ESTADOS[s.estado] || s.estado) + '</strong>');
+                } else if (estActual !== estPrev) {
+                    mostrarToast('📋', 'Solicitud <strong>#' + id + '</strong>: estado <strong>' + (ESTADOS[estActual] || estActual) + '</strong>');
                     ponerBadgeTab('tab-solicitudes');
                 }
-            } else {
-                // Admin: detectar nueva solicitud (no hay prev)
-                // (ya cubierto arriba)
             }
+            // Admin: las nuevas solicitudes se detectan por el bloque !prev de arriba
         }
-        _lastSolEstados[String(s.id)] = { estado: s.estado, importe: s.importe || '' };
+
+        // Guardar estado actual siempre como string para evitar comparaciones de tipo
+        _lastSolEstados[id] = { estado: estActual, importe: impActual };
     });
 }
 
@@ -520,25 +530,39 @@ function quitarBadgeTab(tabId) {
 }
 
 // ── Polling automatico de solicitudes cada 5 segundos ──
+var _pollingActivo = false; // guard para evitar peticiones solapadas
+
 function iniciarPolling() {
     if (solInterval) clearInterval(solInterval);
-    solInterval = setInterval(async function() {
-        if (!currentUser) return;
-        try {
-            if (currentUser.role === 'client') {
-                var data = await jsonp(
-                    URL_SCRIPT + '?action=solicitudes&clienteId=' + currentUser.clienteId + '&role=client'
-                );
-                var lista = data.solicitudes || [];
-                detectarCambiosSolicitudes(lista, false);
-                renderSolicitudesCliente(lista);
-            } else if (currentUser.role === 'admin') {
-                var data = await jsonp(URL_SCRIPT + '?action=solicitudes&role=admin');
-                var lista = data.solicitudes || [];
-                detectarCambiosSolicitudes(lista, true);
-                renderAdminSolicitudes(lista);
-            }
-        } catch(e) {}
+    _pollingActivo = false;
+
+    solInterval = setInterval(function() {
+        if (!currentUser || _pollingActivo) return;
+
+        var url, esAdmin;
+        if (currentUser.role === 'client') {
+            url     = URL_SCRIPT + '?action=solicitudes&clienteId=' + encodeURIComponent(currentUser.clienteId) + '&role=client';
+            esAdmin = false;
+        } else if (currentUser.role === 'admin') {
+            url     = URL_SCRIPT + '?action=solicitudes&role=admin';
+            esAdmin = true;
+        } else {
+            return;
+        }
+
+        _pollingActivo = true;
+        jsonp(url)
+            .then(function(data) {
+                var lista = (data && data.solicitudes) ? data.solicitudes : [];
+                detectarCambiosSolicitudes(lista, esAdmin);
+                if (esAdmin) {
+                    renderAdminSolicitudes(lista);
+                } else {
+                    renderSolicitudesCliente(lista);
+                }
+            })
+            .catch(function() { /* fallo silencioso */ })
+            .then(function() { _pollingActivo = false; }); // siempre libera el guard
     }, 5000);
 }
 
@@ -570,7 +594,7 @@ async function entrar() {
 
 function salir() {
     clearInterval(chatInterval); chatInterval = null;
-    clearInterval(solInterval);  solInterval  = null;
+    clearInterval(solInterval);  solInterval  = null; _pollingActivo = false;
     chatSolId = null; _solMap = {}; _lastSolEstados = {};
     document.getElementById('inp-email').value = '';
     document.getElementById('inp-pass').value  = '';
