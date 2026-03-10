@@ -24,12 +24,12 @@
         /* ── Botones ── */
         .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 16px;border-radius:8px;font-weight:500;transition:all .15s;border:none;font-family:inherit}
         .btn-primary{background:var(--azul);color:#fff}.btn-primary:hover{background:var(--azul-dark)}.btn-primary:disabled{opacity:.6;cursor:not-allowed}
+        .btn-success{background:var(--verde);color:#fff}.btn-success:hover{background:#15803D}.btn-success:disabled{opacity:.6;cursor:not-allowed}
         .btn-ghost{background:#F1F5F9;color:#475569}.btn-ghost:hover{background:#E2E8F0}
         .btn-sheets{background:#1A73E8;color:#fff;font-size:13px;padding:7px 14px;border-radius:7px}.btn-sheets:hover{background:#1557B0}
         .btn-salir{background:#F1F5F9;color:#475569;padding:7px 14px;border-radius:7px;font-size:13px}.btn-salir:hover{background:#E2E8F0}
         .btn-sm{padding:6px 12px;font-size:13px}
         .btn-full{width:100%}
-        .btn-icon{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:6px;background:#F1F5F9;font-size:15px;transition:background .15s}.btn-icon:hover{background:#E2E8F0}
 
         /* ── Inputs ── */
         input[type=text],input[type=email],input[type=password],input[type=number],textarea,select{
@@ -68,49 +68,37 @@
         .cab-right{display:flex;align-items:center;gap:10px}
         .cab-name{font-size:14px;font-weight:500;color:#475569}
 
-        /* ── Tabs (cliente) ── */
+        /* ── Tabs ── */
         .tabs{display:flex;gap:2px;background:var(--gris-light);border-radius:10px;padding:3px;margin-bottom:22px;width:fit-content}
         .tab-btn{padding:7px 20px;border-radius:8px;font-size:14px;font-weight:500;color:var(--muted);transition:all .15s;background:transparent}
         .tab-btn.activo{background:#fff;color:var(--texto);box-shadow:0 1px 3px rgba(0,0,0,.1)}
 
         /* ── Contenido ── */
-        .contenido{max-width:1100px;margin:0 auto;padding:28px 24px}
+        .contenido{max-width:1200px;margin:0 auto;padding:28px 24px}
         .titulo-pag{font-size:20px;font-weight:700;margin-bottom:4px}
         .sub-pag{font-size:14px;color:var(--muted);margin-bottom:20px}
         .fila-top{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px}
 
-        /* ── Tabla de trabajos ── */
+        /* ── Tablas ── */
         .tabla-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--borde);box-shadow:0 1px 3px rgba(0,0,0,.06)}
         .tabla{width:100%;border-collapse:collapse;background:#fff;font-size:13px}
         .tabla th{background:#F8FAFC;padding:10px 14px;text-align:left;font-size:12px;font-weight:600;color:#475569;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--borde);white-space:nowrap}
-        .tabla td{padding:11px 14px;border-bottom:1px solid #F1F5F9;vertical-align:middle}
+        .tabla td{padding:10px 14px;border-bottom:1px solid #F1F5F9;vertical-align:middle}
         .tabla tr:last-child td{border-bottom:none}
-        .tabla tr:hover td{background:#FAFBFC}
+        .tabla tbody tr:hover td{background:#FAFBFC}
+        /* Fila de filtros */
+        .tabla .filtro-row td{padding:4px 6px;background:#EEF2FF;border-bottom:2px solid #C7D2FE}
+        .tabla .filtro-row td input{font-size:12px;padding:4px 8px;border-radius:6px;border:1px solid #C7D2FE;background:#fff;width:100%;min-width:50px}
+        .tabla .filtro-row td input:focus{border-color:var(--azul);outline:none;box-shadow:none}
         .doc-link-sm{display:inline-flex;align-items:center;gap:4px;color:var(--azul);font-size:12px;padding:3px 8px;background:var(--azul-light);border-radius:5px;margin:2px}
         .doc-link-sm:hover{background:#BFDBFE}
-        .sin-datos td{text-align:center;color:var(--muted);padding:28px;font-size:14px}
-
-        /* ── Sección cliente admin ── */
-        .cliente-sec{margin-bottom:32px}
-        .cliente-cab{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--borde)}
-        .cli-ini{width:38px;height:38px;min-width:38px;border-radius:50%;background:var(--azul);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px}
-        .cli-nom{font-size:15px;font-weight:600}
-        .cli-email{font-size:13px;color:var(--muted)}
-
-        /* ── Tarjetas de solicitud ── */
-        .sol-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
-        .sol-card{background:#fff;border-radius:12px;padding:16px;border:1px solid var(--borde);box-shadow:0 1px 3px rgba(0,0,0,.06);display:flex;flex-direction:column;gap:10px}
-        .sol-card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-        .sol-id{font-size:12px;color:var(--muted)}.sol-fecha{font-size:11px;color:var(--muted)}
-        .sol-cliente{font-size:13px;font-weight:600;color:var(--texto)}
-        .sol-items-preview{font-size:13px;color:#475569;line-height:1.5}
-        .sol-importe{font-size:15px;font-weight:700;color:var(--verde);background:var(--verde-light);padding:6px 12px;border-radius:8px;display:inline-block}
-        .sol-footer{display:flex;gap:8px;flex-wrap:wrap}
+        .sin-datos td{text-align:center;color:var(--muted);padding:32px;font-size:14px}
+        .items-resumen{font-size:12px;color:#475569;line-height:1.6;max-width:240px}
 
         /* ── Modal overlay ── */
         .overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px;backdrop-filter:blur(2px)}
         .modal{background:#fff;border-radius:14px;width:100%;max-width:560px;box-shadow:0 20px 40px rgba(0,0,0,.15);display:flex;flex-direction:column;max-height:90vh;animation:modalIn .2s ease-out}
-        .modal-lg{max-width:820px}
+        .modal-lg{max-width:840px}
         @keyframes modalIn{from{opacity:0;transform:translateY(-16px) scale(.97)}to{opacity:1;transform:none}}
         .modal-head{display:flex;align-items:center;justify-content:space-between;padding:18px 22px 14px;border-bottom:1px solid var(--borde);flex-shrink:0}
         .modal-head h3{font-size:16px;font-weight:700}
@@ -126,14 +114,14 @@
         .conceptos-head span{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 
         /* ── Chat ── */
-        .chat-layout{display:grid;grid-template-columns:1fr 1.2fr;gap:16px;height:500px}
+        .chat-layout{display:grid;grid-template-columns:1fr 1.3fr;gap:16px;height:480px}
         .chat-left{overflow-y:auto;display:flex;flex-direction:column;gap:12px}
         .chat-right{display:flex;flex-direction:column;border:1px solid var(--borde);border-radius:10px;overflow:hidden}
         .chat-mensajes{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;background:#F8FAFC}
-        .msg{max-width:80%;display:flex;flex-direction:column;gap:3px}
+        .msg{max-width:82%;display:flex;flex-direction:column;gap:3px}
         .msg-admin{align-self:flex-end;align-items:flex-end}
         .msg-cliente{align-self:flex-start;align-items:flex-start}
-        .msg-burbuja{padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.5;white-space:pre-wrap}
+        .msg-burbuja{padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
         .msg-admin .msg-burbuja{background:var(--azul);color:#fff;border-bottom-right-radius:3px}
         .msg-cliente .msg-burbuja{background:#fff;color:var(--texto);border:1px solid var(--borde);border-bottom-left-radius:3px}
         .msg-meta{font-size:11px;color:var(--muted)}
@@ -141,18 +129,25 @@
         .chat-input-area input{flex:1;padding:8px 12px;font-size:13px;border-radius:8px}
         .chat-sin-msg{text-align:center;color:var(--muted);font-size:13px;padding:20px}
 
-        /* Sección izq del chat (detalles solicitud) */
+        /* Detalle solicitud en chat */
         .sol-detalle{background:#F8FAFC;border:1px solid var(--borde);border-radius:10px;padding:14px}
-        .sol-detalle h4{font-size:13px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
+        .sol-detalle h4{font-size:12px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
         .items-tabla{width:100%;font-size:13px;border-collapse:collapse}
         .items-tabla th{text-align:left;font-weight:600;color:var(--muted);padding:4px 8px;border-bottom:1px solid var(--borde);font-size:12px}
         .items-tabla td{padding:5px 8px;border-bottom:1px solid #F1F5F9}
         .items-tabla tr:last-child td{border-bottom:none}
+
+        /* Formulario cotizacion admin */
         .respuesta-form{background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:14px}
-        .respuesta-form h4{font-size:13px;font-weight:700;color:var(--verde);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
+        .respuesta-form h4{font-size:12px;font-weight:700;color:var(--verde);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
         .respuesta-form input,.respuesta-form textarea{font-size:13px;padding:8px 10px;margin-bottom:8px}
 
-        /* ── Estados vacíos / Loading ── */
+        /* Display importe respondida */
+        .importe-display{background:var(--verde-light);border:1px solid #BBF7D0;border-radius:10px;padding:14px;text-align:center}
+        .importe-valor{font-size:22px;font-weight:700;color:var(--verde)}
+        .importe-nota{font-size:13px;color:#475569;margin-top:6px;line-height:1.5}
+
+        /* ── Estados vacios / Loading ── */
         .vacio{text-align:center;padding:40px 20px;color:var(--muted)}
         .vacio .ico{font-size:40px;display:block;margin-bottom:10px}
         .cargando{text-align:center;padding:40px;color:var(--muted)}
@@ -161,9 +156,9 @@
         @keyframes spin{to{transform:rotate(360deg)}}
         .spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
 
-        @media(max-width:700px){
-            .chat-layout{grid-template-columns:1fr;height:auto}.chat-right{height:350px}
-            .concepto-fila{grid-template-columns:1fr 70px}.concepto-fila input:nth-child(3){display:none}
+        @media(max-width:760px){
+            .chat-layout{grid-template-columns:1fr;height:auto}.chat-right{height:320px}
+            .concepto-fila{grid-template-columns:1fr 70px 28px}.concepto-fila input:nth-child(3){display:none}
             .contenido{padding:16px 12px}.cabecera{padding:0 14px}.cab-name{display:none}
         }
     </style>
@@ -180,9 +175,9 @@
                 <p>Ingresa con tus credenciales</p>
             </div>
             <div id="err-login" class="error-box" style="display:none"></div>
-            <div class="campo"><label>Correo electrónico</label><input type="email" id="inp-email" placeholder="tu@email.com" autocomplete="email"></div>
-            <div class="campo"><label>Contraseña</label><input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password"></div>
-            <button class="btn btn-primary btn-full" id="btn-entrar" onclick="entrar()">Iniciar Sesión</button>
+            <div class="campo"><label>Correo electronico</label><input type="email" id="inp-email" placeholder="tu@email.com" autocomplete="email"></div>
+            <div class="campo"><label>Contrasena</label><input type="password" id="inp-pass" placeholder="••••••••" autocomplete="current-password"></div>
+            <button class="btn btn-primary btn-full" id="btn-entrar" onclick="entrar()">Iniciar Sesion</button>
         </div>
     </div>
 </div>
@@ -203,23 +198,20 @@
                 <div class="sub-pag">Estado actualizado de tus proyectos</div>
             </div>
         </div>
-        <!-- Tabs -->
         <div class="tabs">
             <button class="tab-btn activo" id="tab-trabajos" onclick="cambiarTab('trabajos')">📋 Mis Trabajos</button>
             <button class="tab-btn" id="tab-solicitudes" onclick="cambiarTab('solicitudes')">💬 Solicitudes</button>
         </div>
-        <!-- Tab: Trabajos -->
         <div id="contenido-trabajos">
             <div id="tabla-trabajos-cli" class="cargando">Cargando...</div>
         </div>
-        <!-- Tab: Solicitudes -->
         <div id="contenido-solicitudes" style="display:none">
             <div class="fila-top">
                 <div>
                     <div class="titulo-pag" style="font-size:17px">Solicitudes de Presupuesto</div>
                     <div class="sub-pag">Tus peticiones enviadas al administrador</div>
                 </div>
-                <button class="btn btn-primary btn-sm" onclick="abrirNuevaSolicitud()">＋ Pedir Cotización</button>
+                <button class="btn btn-primary btn-sm" onclick="abrirNuevaSolicitud()">+ Pedir Cotizacion</button>
             </div>
             <div id="lista-sol-cli" class="cargando">Cargando...</div>
         </div>
@@ -229,20 +221,25 @@
 <!-- ════════ VISTA ADMIN ════════ -->
 <div id="p-admin" style="display:none">
     <header class="cabecera">
-        <div class="cab-logo">📋 Panel de Administración</div>
+        <div class="cab-logo">📋 Panel de Administracion</div>
         <div class="cab-right">
             <button class="btn-sheets" id="btn-hoja" onclick="window.open(urlHoja,'_blank')">✏️ Editar en Google Sheets</button>
             <button class="btn-salir" onclick="salir()">Salir</button>
         </div>
     </header>
     <div class="contenido">
-        <!-- Tabs admin -->
         <div class="tabs">
             <button class="tab-btn activo" id="atab-trabajos" onclick="cambiarTabAdmin('trabajos')">📋 Trabajos</button>
             <button class="tab-btn" id="atab-solicitudes" onclick="cambiarTabAdmin('solicitudes')">💬 Solicitudes</button>
         </div>
         <!-- Tab Trabajos -->
         <div id="admin-trabajos">
+            <div class="fila-top">
+                <div>
+                    <div class="titulo-pag" style="font-size:17px">Todos los Trabajos</div>
+                    <div class="sub-pag">Vista unificada de todos los clientes</div>
+                </div>
+            </div>
             <div id="contenido-admin" class="cargando">Cargando...</div>
         </div>
         <!-- Tab Solicitudes -->
@@ -252,7 +249,7 @@
                     <div class="titulo-pag" style="font-size:17px">Solicitudes de Presupuesto</div>
                     <div class="sub-pag">Todas las peticiones de los clientes</div>
                 </div>
-                <button class="btn btn-ghost btn-sm" onclick="refrescarSolicitudesAdmin()">↻ Actualizar</button>
+                <button class="btn btn-ghost btn-sm" onclick="refrescarSolicitudesAdmin()">&#8635; Actualizar</button>
             </div>
             <div id="lista-sol-admin" class="cargando">Cargando...</div>
         </div>
@@ -268,15 +265,15 @@
         </div>
         <div class="modal-body">
             <div class="campo">
-                <label>Descripción general <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+                <label>Descripcion general <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
                 <textarea id="sol-nota" rows="2" placeholder="Describe brevemente lo que necesitas..."></textarea>
             </div>
             <div style="margin-bottom:8px;font-size:13px;font-weight:600;color:var(--texto)">Conceptos a presupuestar</div>
             <div class="conceptos-head">
-                <span>Descripción</span><span>Cantidad</span><span>Unidad</span><span></span>
+                <span>Descripcion</span><span>Cantidad</span><span>Unidad</span><span></span>
             </div>
             <div id="conceptos-lista"></div>
-            <button class="btn btn-ghost btn-sm" onclick="agregarConcepto()" style="margin-top:4px">＋ Añadir concepto</button>
+            <button class="btn btn-ghost btn-sm" onclick="agregarConcepto()" style="margin-top:4px">+ Anadir concepto</button>
             <div id="err-sol" class="error-box" style="display:none;margin-top:12px"></div>
         </div>
         <div class="modal-foot">
@@ -286,47 +283,56 @@
     </div>
 </div>
 
-<!-- ════════ MODAL: Chat ════════ -->
+<!-- ════════ MODAL: Chat / Detalle Solicitud ════════ -->
 <div id="modal-chat" class="overlay" style="display:none" onclick="cerrarSiOverlay(event,'modal-chat')">
     <div class="modal modal-lg">
         <div class="modal-head">
             <div>
-                <h3>💬 Solicitud <span id="chat-id-label">#—</span></h3>
-                <div style="margin-top:4px"><span id="chat-estado-badge" class="badge"></span> <span id="chat-cliente-label" style="font-size:13px;color:var(--muted)"></span></div>
+                <h3>💬 Solicitud <span id="chat-id-label">#-</span></h3>
+                <div style="margin-top:4px">
+                    <span id="chat-estado-badge" class="badge"></span>
+                    <span id="chat-cliente-label" style="font-size:13px;color:var(--muted);margin-left:6px"></span>
+                </div>
             </div>
             <button class="modal-close" onclick="cerrarChat()">✕</button>
         </div>
         <div class="modal-body" style="padding:16px">
             <div class="chat-layout">
-                <!-- Columna izq: detalles + formulario respuesta -->
+                <!-- Columna izq: detalles + cotizacion -->
                 <div class="chat-left">
                     <div class="sol-detalle">
                         <h4>Items solicitados</h4>
                         <table class="items-tabla">
-                            <thead><tr><th>Descripción</th><th>Cant.</th><th>Unidad</th></tr></thead>
+                            <thead><tr><th>Descripcion</th><th>Cant.</th><th>Unidad</th></tr></thead>
                             <tbody id="chat-items-body"></tbody>
                         </table>
-                        <div id="chat-nota-general" style="display:none;margin-top:10px;font-size:13px;color:var(--muted)"></div>
                     </div>
-                    <!-- Solo admin: responder -->
+
+                    <!-- Importe ya respondida -->
+                    <div id="chat-importe-display" class="importe-display" style="display:none">
+                        <div id="chat-importe-valor" class="importe-valor"></div>
+                        <div id="chat-nota-admin-display" class="importe-nota"></div>
+                    </div>
+
+                    <!-- Formulario cotizacion (solo admin, solo si no respondida) -->
                     <div class="respuesta-form" id="form-respuesta" style="display:none">
-                        <h4>✏️ Responder</h4>
-                        <label>Importe total (€)</label>
+                        <h4>✏️ Enviar Cotizacion</h4>
+                        <label>Importe total (euros)</label>
                         <input type="number" id="resp-importe" placeholder="0.00" min="0" step="0.01">
-                        <label>Mensaje para el cliente</label>
-                        <textarea id="resp-nota" rows="3" placeholder="Detalles de tu respuesta..."></textarea>
-                        <button class="btn btn-primary btn-full btn-sm" onclick="enviarRespuesta()">Enviar Respuesta</button>
+                        <label style="margin-top:4px">Mensaje para el cliente</label>
+                        <textarea id="resp-nota" rows="3" placeholder="Detalles de tu propuesta..."></textarea>
+                        <button class="btn btn-success btn-full btn-sm" id="btn-cotizar" onclick="enviarRespuesta()" style="margin-top:4px">
+                            Enviar Cotizacion
+                        </button>
                         <div id="err-resp" class="error-box" style="display:none;margin-top:8px"></div>
                     </div>
-                    <!-- Importe (si ya hay respuesta) -->
-                    <div id="chat-importe-display" style="display:none">
-                        <span id="chat-importe-valor" class="sol-importe"></span>
-                        <div id="chat-nota-admin-display" style="font-size:13px;color:#475569;margin-top:8px"></div>
-                    </div>
                 </div>
-                <!-- Columna der: chat -->
+
+                <!-- Columna der: mensajes -->
                 <div class="chat-right">
-                    <div class="chat-mensajes" id="chat-mensajes"></div>
+                    <div class="chat-mensajes" id="chat-mensajes">
+                        <div class="chat-sin-msg">Cargando mensajes...</div>
+                    </div>
                     <div class="chat-input-area">
                         <input type="text" id="chat-msg" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter')enviarMensaje()">
                         <button class="btn btn-primary btn-sm" onclick="enviarMensaje()">Enviar</button>
@@ -342,7 +348,7 @@
     <div style="display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px">
         <div style="text-align:center;max-width:480px">
             <div style="font-size:52px;margin-bottom:16px">⚙️</div>
-            <h2 style="margin-bottom:10px">Configuración pendiente</h2>
+            <h2 style="margin-bottom:10px">Configuracion pendiente</h2>
             <p style="color:var(--muted);line-height:1.6">Abre <strong>index.html</strong> y reemplaza <code style="background:var(--gris-light);padding:2px 8px;border-radius:5px">PEGA_AQUI_TU_URL</code> con tu URL de Google Apps Script.</p>
         </div>
     </div>
@@ -350,43 +356,86 @@
 
 <script>
 // ════════════════════════════════════════════════
-//  CONFIGURACIÓN — solo cambia esta línea:
+//  CONFIGURACION — solo cambia esta linea:
 // ════════════════════════════════════════════════
 const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbze3hMML4H6PxmN_dh5HbO5vC4yPYsX6GTsGJm8dzD1N8ynz0DGTnEMVfbDLeRhWtITIg/exec';
 
 // ════════════════════════════════════════════════
 //  ESTADO GLOBAL
 // ════════════════════════════════════════════════
-let currentUser   = null; // {role, name, clienteId}
-let urlHoja       = '#';
-let chatSolId     = null;
-let chatInterval  = null;
+var currentUser  = null;
+var urlHoja      = '#';
+var chatSolId    = null;
+var chatInterval = null;
+var _solMap      = {}; // almacen de solicitudes por ID (evita escaping en onclick)
 
-const ESTADOS = {pendiente:'Pendiente',en_revision:'En Revisión',en_proceso:'En Proceso',completado:'Completado',cancelado:'Cancelado',respondida:'Respondida',revisando:'Revisando',aceptada:'Aceptada'};
-const EST_CLASS = {pendiente:'s-pendiente',en_revision:'s-en_revision',en_proceso:'s-en_proceso',completado:'s-completado',cancelado:'s-cancelado',respondida:'s-respondida',revisando:'s-revisando',aceptada:'s-aceptada'};
+var ESTADOS = {
+    pendiente:'Pendiente', en_revision:'En Revision', en_proceso:'En Proceso',
+    completado:'Completado', cancelado:'Cancelado', respondida:'Respondida',
+    revisando:'Revisando', aceptada:'Aceptada'
+};
+var EST_CLASS = {
+    pendiente:'s-pendiente', en_revision:'s-en_revision', en_proceso:'s-en_proceso',
+    completado:'s-completado', cancelado:'s-cancelado', respondida:'s-respondida',
+    revisando:'s-revisando', aceptada:'s-aceptada'
+};
 
 // ════════════════════════════════════════════════
 //  UTILIDADES
 // ════════════════════════════════════════════════
 function mostrar(id) {
-    ['p-login','p-cliente','p-admin','p-config'].forEach(p => document.getElementById(p).style.display = 'none');
+    ['p-login','p-cliente','p-admin','p-config'].forEach(function(p) {
+        document.getElementById(p).style.display = 'none';
+    });
     document.getElementById(id).style.display = 'block';
 }
-function cerrarModal(id)  { document.getElementById(id).style.display = 'none'; }
-function abrirModal(id)   { document.getElementById(id).style.display = 'flex'; }
+function cerrarModal(id)        { document.getElementById(id).style.display = 'none'; }
+function abrirModal(id)         { document.getElementById(id).style.display = 'flex'; }
 function cerrarSiOverlay(e, id) { if (e.target.id === id) cerrarModal(id); }
-function badge(estado)    { const cls = EST_CLASS[estado]||'s-pendiente'; return `<span class="badge ${cls}">${ESTADOS[estado]||estado}</span>`; }
 
+function badge(estado) {
+    var cls = EST_CLASS[estado] || 's-pendiente';
+    return '<span class="badge ' + cls + '">' + (ESTADOS[estado] || estado) + '</span>';
+}
+
+function esc(str) {
+    return String(str == null ? '' : str)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// JSONP — evita CORS entre GitHub Pages y Apps Script
 function jsonp(url) {
-    return new Promise((resolve, reject) => {
-        const cb = 'cb' + Date.now();
-        const s  = document.createElement('script');
-        const t  = setTimeout(() => { cleanup(); reject(new Error('Timeout')); }, 20000);
-        function cleanup() { clearTimeout(t); delete window[cb]; s.remove(); }
-        window[cb] = d => { cleanup(); resolve(d); };
-        s.onerror  = () => { cleanup(); reject(new Error('Error de red')); };
+    return new Promise(function(resolve, reject) {
+        var cb = 'cb' + Date.now() + Math.random().toString(36).slice(2);
+        var s  = document.createElement('script');
+        var t  = setTimeout(function() { cleanup(); reject(new Error('Timeout')); }, 20000);
+        function cleanup() { clearTimeout(t); delete window[cb]; if (s.parentNode) s.remove(); }
+        window[cb] = function(d) { cleanup(); resolve(d); };
+        s.onerror  = function() { cleanup(); reject(new Error('Error de red')); };
         s.src = url + '&callback=' + cb;
         document.head.appendChild(s);
+    });
+}
+
+// Filtros por columna — event delegation
+document.addEventListener('input', function(e) {
+    if (e.target.classList.contains('col-filter')) {
+        filtrarTabla(e.target.closest('table'));
+    }
+});
+
+function filtrarTabla(tabla) {
+    if (!tabla) return;
+    var filtros = Array.from(tabla.querySelectorAll('.filtro-row .col-filter'))
+                       .map(function(i) { return i.value.toLowerCase().trim(); });
+    tabla.querySelectorAll('tbody tr').forEach(function(fila) {
+        if (fila.classList.contains('sin-datos')) return;
+        var celdas  = Array.from(fila.querySelectorAll('td'));
+        var visible = filtros.every(function(f, i) {
+            if (!f) return true;
+            return celdas[i] && celdas[i].textContent.toLowerCase().includes(f);
+        });
+        fila.style.display = visible ? '' : 'none';
     });
 }
 
@@ -394,27 +443,31 @@ function jsonp(url) {
 //  AUTH
 // ════════════════════════════════════════════════
 async function entrar() {
-    const email = document.getElementById('inp-email').value.trim();
-    const pass  = document.getElementById('inp-pass').value;
-    const btn   = document.getElementById('btn-entrar');
-    const err   = document.getElementById('err-login');
+    var email = document.getElementById('inp-email').value.trim();
+    var pass  = document.getElementById('inp-pass').value;
+    var btn   = document.getElementById('btn-entrar');
+    var err   = document.getElementById('err-login');
     err.style.display = 'none';
-    if (!email || !pass) { err.textContent='Completa los campos.'; err.style.display='block'; return; }
-    btn.innerHTML = '<span class="spinner"></span> Entrando…'; btn.disabled = true;
+    if (!email || !pass) { err.textContent = 'Completa los campos.'; err.style.display = 'block'; return; }
+    btn.innerHTML = '<span class="spinner"></span> Entrando...'; btn.disabled = true;
     try {
-        const data = await jsonp(`${URL_SCRIPT}?email=${encodeURIComponent(email)}&pass=${encodeURIComponent(pass)}`);
-        if (data.error) { err.textContent = data.error; err.style.display = 'block'; }
-        else if (data.role === 'admin')  { urlHoja = data.sheetUrl||'#'; iniciarAdmin(data); }
+        var data = await jsonp(
+            URL_SCRIPT + '?action=login&email=' + encodeURIComponent(email) + '&pass=' + encodeURIComponent(pass)
+        );
+        if (data.error)              { err.textContent = data.error; err.style.display = 'block'; }
+        else if (data.role === 'admin')  { urlHoja = data.sheetUrl || '#'; iniciarAdmin(data); }
         else if (data.role === 'client') { iniciarCliente(data); }
     } catch(e) {
-        err.textContent = 'Error de conexión. Revisa el despliegue del Apps Script.';
-        err.style.display = 'block'; console.error(e);
+        err.textContent = 'Error de conexion. Revisa el despliegue del Apps Script.';
+        err.style.display = 'block';
+        console.error(e);
     }
-    btn.innerHTML = 'Iniciar Sesión'; btn.disabled = false;
+    btn.innerHTML = 'Iniciar Sesion'; btn.disabled = false;
 }
 
 function salir() {
     clearInterval(chatInterval); chatInterval = null;
+    chatSolId = null; _solMap = {};
     document.getElementById('inp-email').value = '';
     document.getElementById('inp-pass').value  = '';
     mostrar('p-login');
@@ -425,55 +478,60 @@ function salir() {
 // ════════════════════════════════════════════════
 function iniciarCliente(data) {
     currentUser = { role:'client', name: data.name, clienteId: data.clienteId };
-    document.getElementById('nombre-cli').textContent  = data.name;
-    document.getElementById('saludo-cli').textContent  = `Hola, ${data.name}`;
-    renderTablaCliente('tabla-trabajos-cli', data.trabajos);
+    document.getElementById('nombre-cli').textContent = data.name;
+    document.getElementById('saludo-cli').textContent = 'Hola, ' + data.name;
+    document.getElementById('tabla-trabajos-cli').innerHTML = buildTablaTrabajos(data.trabajos, false);
     renderSolicitudesCliente(data.solicitudes || []);
     mostrar('p-cliente');
 }
 
 function cambiarTab(cual) {
-    const tabs = ['trabajos','solicitudes'];
-    tabs.forEach(t => {
+    ['trabajos','solicitudes'].forEach(function(t) {
         document.getElementById('tab-' + t).classList.toggle('activo', t === cual);
         document.getElementById('contenido-' + t).style.display = t === cual ? 'block' : 'none';
     });
 }
 
 // ════════════════════════════════════════════════
-//  TABLA DE TRABAJOS (dinámica)
+//  TABLA TRABAJOS — dinamica con fila de filtros
 // ════════════════════════════════════════════════
-function renderTablaCliente(containerId, trabajos) {
-    const el = document.getElementById(containerId);
-    el.innerHTML = buildTabla(trabajos);
-}
-
-function buildTabla(trabajos) {
+function buildTablaTrabajos(trabajos, mostrarCliente) {
     if (!trabajos || !trabajos.headers || !trabajos.headers.length) {
-        return `<div class="vacio"><span class="ico">📋</span><p>Define columnas en la fila 1 de la hoja "Trabajos".</p></div>`;
+        return '<div class="vacio"><span class="ico">📋</span><p>Define columnas en la fila 1 de la hoja "Trabajos".</p></div>';
     }
-    const {headers, rows} = trabajos;
-    let h = `<div class="tabla-wrap"><table class="tabla"><thead><tr>`;
-    headers.forEach(hdr => h += `<th>${hdr}</th>`);
-    h += `</tr></thead><tbody>`;
+    var headers = trabajos.headers;
+    var rows    = trabajos.rows || [];
+    var cols    = mostrarCliente ? ['Cliente'].concat(headers) : headers;
+    var nCols   = cols.length;
+
+    var h = '<div class="tabla-wrap"><table class="tabla"><thead>';
+    // Encabezados
+    h += '<tr>' + cols.map(function(c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr>';
+    // Filtros
+    h += '<tr class="filtro-row">' + cols.map(function() {
+        return '<td><input class="col-filter" placeholder="Filtrar..."></td>';
+    }).join('') + '</tr>';
+    h += '</thead><tbody>';
+
     if (!rows.length) {
-        h += `<tr class="sin-datos"><td colspan="${headers.length}">Sin trabajos registrados aún.</td></tr>`;
+        h += '<tr class="sin-datos"><td colspan="' + nCols + '">Sin trabajos registrados aun.</td></tr>';
     } else {
-        rows.forEach(row => {
+        rows.forEach(function(row) {
             h += '<tr>';
-            row.forEach((val, i) => {
-                const hdr   = (headers[i]||'').toLowerCase();
-                const isEst = hdr.includes('estado');
-                const isDoc = hdr.includes('doc');
-                let display = val || '';
+            if (mostrarCliente) h += '<td>' + esc(row._cliente || '') + '</td>';
+            row.forEach(function(val, i) {
+                var hdr    = (headers[i] || '').toLowerCase();
+                var isEst  = hdr.indexOf('estado') !== -1;
+                var isDoc  = hdr.indexOf('doc') !== -1 || hdr.indexOf('archivo') !== -1 || hdr.indexOf('enlace') !== -1;
+                var display = esc(val || '');
                 if (isEst && val) {
-                    display = badge(val.toLowerCase().replace(/ /g,'_'));
+                    display = badge(String(val).toLowerCase().replace(/ /g,'_'));
                 } else if (isDoc && val) {
-                    display = val.split(',').filter(Boolean).map((u,n) =>
-                        `<a href="${u.trim()}" target="_blank" class="doc-link-sm">📎 Doc ${n+1}</a>`
-                    ).join('');
+                    display = String(val).split(',').filter(Boolean).map(function(u, n) {
+                        return '<a href="' + esc(u.trim()) + '" target="_blank" class="doc-link-sm">📎 Archivo ' + (n+1) + '</a>';
+                    }).join('');
                 }
-                h += `<td>${display}</td>`;
+                h += '<td>' + display + '</td>';
             });
             h += '</tr>';
         });
@@ -483,42 +541,78 @@ function buildTabla(trabajos) {
 }
 
 // ════════════════════════════════════════════════
-//  SOLICITUDES — cliente
+//  TABLA SOLICITUDES — con fila de filtros
 // ════════════════════════════════════════════════
-function renderSolicitudesCliente(solicitudes) {
-    const el = document.getElementById('lista-sol-cli');
+function buildTablaSolicitudes(solicitudes, isAdmin) {
+    // Guardar en _solMap para abrirChat (evita inline onclick con JSON)
+    solicitudes.forEach(function(s) { _solMap[String(s.id)] = s; });
+
     if (!solicitudes.length) {
-        el.innerHTML = `<div class="vacio"><span class="ico">💬</span><p>Aún no has enviado ninguna solicitud.</p></div>`;
-        return;
+        return '<div class="vacio"><span class="ico">💬</span><p>' +
+            (isAdmin ? 'No hay solicitudes aun.' : 'Aun no has enviado ninguna solicitud.') + '</p></div>';
     }
-    el.innerHTML = `<div class="sol-grid">${solicitudes.map(s => buildSolCard(s, false)).join('')}</div>`;
+
+    var thCliente = isAdmin ? '<th>CLIENTE</th>' : '';
+    var tfCliente = isAdmin ? '<td><input class="col-filter" placeholder="Filtrar..."></td>' : '';
+
+    var h = '<div class="tabla-wrap"><table class="tabla"><thead>' +
+        '<tr>' +
+        '<th>#</th>' +
+        thCliente +
+        '<th>CONCEPTOS</th>' +
+        '<th>ESTADO</th>' +
+        '<th>IMPORTE</th>' +
+        '<th>FECHA</th>' +
+        '<th>ACCIONES</th>' +
+        '</tr>' +
+        '<tr class="filtro-row">' +
+        '<td><input class="col-filter" placeholder="Filtrar..."></td>' +
+        tfCliente +
+        '<td><input class="col-filter" placeholder="Filtrar..."></td>' +
+        '<td><input class="col-filter" placeholder="Filtrar..."></td>' +
+        '<td><input class="col-filter" placeholder="Filtrar..."></td>' +
+        '<td><input class="col-filter" placeholder="Filtrar..."></td>' +
+        '<td></td>' +
+        '</tr>' +
+        '</thead><tbody>';
+
+    solicitudes.forEach(function(s) {
+        var items = [];
+        try { items = JSON.parse(s.items) || []; } catch(e) {}
+
+        var preview = items.slice(0,2).map(function(it) {
+            return '• ' + esc(it.desc || '') + (it.cant ? ' (' + esc(it.cant) + ')' : '');
+        }).join('<br>') + (items.length > 2 ? '<br><em style="color:var(--muted)">+' + (items.length-2) + ' mas...</em>' : '');
+
+        var importeHtml = s.importe
+            ? '<span style="color:var(--verde);font-weight:600">💰 ' + esc(s.importe) + ' euros</span>'
+            : '<span style="color:var(--muted)">-</span>';
+
+        var tdCliente = isAdmin ? '<td>' + esc(s.clienteNombre || '') + '</td>' : '';
+        var solId     = esc(s.id);
+
+        h += '<tr>' +
+            '<td style="color:var(--muted);font-size:12px;white-space:nowrap">#' + solId + '</td>' +
+            tdCliente +
+            '<td><div class="items-resumen">' + (preview || '<em style="color:var(--muted)">Sin conceptos</em>') + '</div></td>' +
+            '<td>' + badge(s.estado) + '</td>' +
+            '<td>' + importeHtml + '</td>' +
+            '<td style="white-space:nowrap;font-size:12px;color:var(--muted)">' + esc(s.fecha) + '</td>' +
+            '<td><button class="btn btn-ghost btn-sm" onclick="abrirChat(\'' + solId + '\')">💬 Chat</button></td>' +
+            '</tr>';
+    });
+
+    h += '</tbody></table></div>';
+    return h;
 }
 
-function buildSolCard(s, isAdmin) {
-    let items = [];
-    try { items = JSON.parse(s.items) || []; } catch(e) {}
-    const preview = items.slice(0,3).map(it => `• ${it.desc||''}${it.cant ? ' ('+it.cant+')' : ''}`).join('<br>') + (items.length > 3 ? `<br><em>+${items.length-3} más…</em>` : '');
-    const importe = s.importe ? `<div class="sol-importe">💰 ${s.importe} €</div>` : '';
-    const cliente = isAdmin ? `<div class="sol-cliente">👤 ${s.clienteNombre}</div>` : '';
-    return `
-    <div class="sol-card">
-        <div class="sol-card-top">
-            <div><span class="sol-id">Solicitud #${s.id}</span>${cliente}</div>
-            ${badge(s.estado)}
-        </div>
-        <div class="sol-items-preview">${preview || '<em style="color:var(--muted)">Sin conceptos</em>'}</div>
-        ${importe}
-        ${s.notaAdmin ? `<div style="font-size:13px;color:#475569;background:var(--verde-light);padding:8px 10px;border-radius:7px">💬 ${s.notaAdmin}</div>` : ''}
-        <div class="sol-footer">
-            <span class="sol-fecha">📅 ${s.fecha}</span>
-            <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="abrirChat('${s.id}',${JSON.stringify(s.items||'[]').replace(/'/g,"\\'")},'${s.estado}','${s.clienteNombre||''}','${s.importe||''}','${(s.notaAdmin||'').replace(/'/g,"\\'")}')">
-                💬 Chat
-            </button>
-        </div>
-    </div>`;
+function renderSolicitudesCliente(solicitudes) {
+    document.getElementById('lista-sol-cli').innerHTML = buildTablaSolicitudes(solicitudes, false);
 }
 
-// ── Nueva Solicitud ──
+// ════════════════════════════════════════════════
+//  MODAL: NUEVA SOLICITUD
+// ════════════════════════════════════════════════
 function abrirNuevaSolicitud() {
     document.getElementById('conceptos-lista').innerHTML = '';
     document.getElementById('sol-nota').value = '';
@@ -528,36 +622,39 @@ function abrirNuevaSolicitud() {
 }
 
 function agregarConcepto() {
-    const lista = document.getElementById('conceptos-lista');
-    const div   = document.createElement('div');
+    var lista = document.getElementById('conceptos-lista');
+    var div   = document.createElement('div');
     div.className = 'concepto-fila';
-    div.innerHTML = `
-        <input type="text" placeholder="Ej: Impresión A4 color" class="c-desc">
-        <input type="number" placeholder="100" min="1" class="c-cant">
-        <input type="text" placeholder="unidades" class="c-unidad">
-        <button class="btn-del-c" onclick="this.closest('.concepto-fila').remove()">✕</button>`;
+    div.innerHTML =
+        '<input type="text"   placeholder="Ej: Impresion A4 color" class="c-desc">' +
+        '<input type="number" placeholder="100" min="1"             class="c-cant">' +
+        '<input type="text"   placeholder="unidades"                class="c-unidad">' +
+        '<button class="btn-del-c" onclick="this.closest(\'.concepto-fila\').remove()">✕</button>';
     lista.appendChild(div);
 }
 
 async function enviarSolicitud() {
-    const filas = document.querySelectorAll('.concepto-fila');
-    const items = [];
-    filas.forEach(f => {
-        const desc = f.querySelector('.c-desc').value.trim();
-        const cant = f.querySelector('.c-cant').value.trim();
-        const uni  = f.querySelector('.c-unidad').value.trim();
-        if (desc) items.push({desc, cant, uni});
+    var filas = document.querySelectorAll('.concepto-fila');
+    var items = [];
+    filas.forEach(function(f) {
+        var desc = f.querySelector('.c-desc').value.trim();
+        var cant = f.querySelector('.c-cant').value.trim();
+        var uni  = f.querySelector('.c-unidad').value.trim();
+        if (desc) items.push({desc:desc, cant:cant, uni:uni});
     });
-    const err = document.getElementById('err-sol');
-    if (!items.length) { err.textContent='Agrega al menos un concepto.'; err.style.display='block'; return; }
+    var err = document.getElementById('err-sol');
+    if (!items.length) { err.textContent = 'Agrega al menos un concepto.'; err.style.display = 'block'; return; }
 
-    const btn = document.getElementById('btn-enviar-sol');
-    btn.innerHTML = '<span class="spinner" style="border-top-color:white"></span> Enviando…'; btn.disabled = true;
-
+    var btn = document.getElementById('btn-enviar-sol');
+    btn.innerHTML = '<span class="spinner"></span> Enviando...'; btn.disabled = true;
     try {
-        const nota = document.getElementById('sol-nota').value.trim();
-        const url  = `${URL_SCRIPT}?action=solicitar&clienteId=${currentUser.clienteId}&clienteNombre=${encodeURIComponent(currentUser.name)}&items=${encodeURIComponent(JSON.stringify(items))}&nota=${encodeURIComponent(nota)}`;
-        const res  = await jsonp(url);
+        var nota = document.getElementById('sol-nota').value.trim();
+        var url  = URL_SCRIPT + '?action=solicitar' +
+            '&clienteId='       + encodeURIComponent(currentUser.clienteId) +
+            '&clienteNombre='   + encodeURIComponent(currentUser.name) +
+            '&items='           + encodeURIComponent(JSON.stringify(items)) +
+            '&nota='            + encodeURIComponent(nota);
+        var res = await jsonp(url);
         if (res.success) {
             cerrarModal('modal-solicitud');
             await refrescarSolicitudesCliente();
@@ -565,13 +662,15 @@ async function enviarSolicitud() {
         } else {
             err.textContent = res.error || 'Error al enviar.'; err.style.display = 'block';
         }
-    } catch(e) { err.textContent='Error de conexión.'; err.style.display='block'; }
+    } catch(e) { err.textContent = 'Error de conexion.'; err.style.display = 'block'; }
     btn.innerHTML = 'Enviar Solicitud'; btn.disabled = false;
 }
 
 async function refrescarSolicitudesCliente() {
     try {
-        const data = await jsonp(`${URL_SCRIPT}?action=solicitudes&clienteId=${currentUser.clienteId}&role=client`);
+        var data = await jsonp(
+            URL_SCRIPT + '?action=solicitudes&clienteId=' + currentUser.clienteId + '&role=client'
+        );
         renderSolicitudesCliente(data.solicitudes || []);
     } catch(e) {}
 }
@@ -580,141 +679,213 @@ async function refrescarSolicitudesCliente() {
 //  VISTA ADMIN
 // ════════════════════════════════════════════════
 function iniciarAdmin(data) {
-    currentUser = {role:'admin', name:'Admin'};
+    currentUser = { role:'admin', name:'Admin' };
     renderAdminTrabajos(data.clients || []);
     renderAdminSolicitudes(data.solicitudes || []);
     mostrar('p-admin');
 }
 
 function cambiarTabAdmin(cual) {
-    ['trabajos','solicitudes'].forEach(t => {
+    ['trabajos','solicitudes'].forEach(function(t) {
         document.getElementById('atab-' + t).classList.toggle('activo', t === cual);
         document.getElementById('admin-' + t).style.display = t === cual ? 'block' : 'none';
     });
 }
 
+// Admin: tabla plana con TODOS los trabajos de todos los clientes
 function renderAdminTrabajos(clients) {
-    const el = document.getElementById('contenido-admin');
-    if (!clients.length) { el.innerHTML = `<div class="vacio"><span class="ico">👤</span><p>Sin clientes aún. Agrégalos en Google Sheets.</p></div>`; return; }
-    el.innerHTML = clients.map(c => `
-        <div class="cliente-sec">
-            <div class="cliente-cab">
-                <div class="cli-ini">${(c.name||'?').charAt(0).toUpperCase()}</div>
-                <div><div class="cli-nom">${c.name}</div><div class="cli-email">${c.email}</div></div>
-            </div>
-            ${buildTabla(c.trabajos)}
-        </div>`).join('');
+    var el = document.getElementById('contenido-admin');
+    if (!clients.length) {
+        el.innerHTML = '<div class="vacio"><span class="ico">👤</span><p>Sin clientes aun. Agregarlos en Google Sheets.</p></div>';
+        return;
+    }
+
+    // Obtener headers del primer cliente que los tenga
+    var headers = null;
+    clients.forEach(function(c) {
+        if (!headers && c.trabajos && c.trabajos.headers && c.trabajos.headers.length) {
+            headers = c.trabajos.headers;
+        }
+    });
+    if (!headers) {
+        el.innerHTML = '<div class="vacio"><span class="ico">📋</span><p>Define columnas en la fila 1 de la hoja "Trabajos".</p></div>';
+        return;
+    }
+
+    // Aplanar todas las filas con _cliente
+    var allRows = [];
+    clients.forEach(function(c) {
+        if (c.trabajos && c.trabajos.rows) {
+            c.trabajos.rows.forEach(function(row) {
+                var r = row.slice(); // copia del array
+                r._cliente = c.name;
+                allRows.push(r);
+            });
+        }
+    });
+
+    el.innerHTML = buildTablaTrabajos({ headers: headers, rows: allRows }, true);
 }
 
 function renderAdminSolicitudes(solicitudes) {
-    const el = document.getElementById('lista-sol-admin');
-    if (!solicitudes.length) { el.innerHTML = `<div class="vacio"><span class="ico">💬</span><p>No hay solicitudes aún.</p></div>`; return; }
-    el.innerHTML = `<div class="sol-grid">${solicitudes.map(s => buildSolCard(s, true)).join('')}</div>`;
+    document.getElementById('lista-sol-admin').innerHTML = buildTablaSolicitudes(solicitudes, true);
 }
 
 async function refrescarSolicitudesAdmin() {
+    document.getElementById('lista-sol-admin').innerHTML = '<div class="cargando">Cargando...</div>';
     try {
-        const data = await jsonp(`${URL_SCRIPT}?action=solicitudes&role=admin`);
+        var data = await jsonp(URL_SCRIPT + '?action=solicitudes&role=admin');
         renderAdminSolicitudes(data.solicitudes || []);
-    } catch(e) {}
+    } catch(e) {
+        document.getElementById('lista-sol-admin').innerHTML =
+            '<div class="vacio"><span class="ico">⚠️</span><p>Error al cargar solicitudes.</p></div>';
+    }
 }
 
 // ════════════════════════════════════════════════
-//  CHAT
+//  CHAT — abrirChat solo recibe ID, datos en _solMap
 // ════════════════════════════════════════════════
-function abrirChat(solId, itemsJson, estado, clienteNombre, importe, notaAdmin) {
-    chatSolId = solId;
+function abrirChat(solId) {
+    var s = _solMap[String(solId)];
+    if (!s) { alert('No se encontro la solicitud. Recarga la lista.'); return; }
+
+    chatSolId = String(solId);
     clearInterval(chatInterval);
 
-    // Cabecera
-    document.getElementById('chat-id-label').textContent    = '#' + solId;
-    document.getElementById('chat-estado-badge').className  = 'badge ' + (EST_CLASS[estado]||'s-pendiente');
-    document.getElementById('chat-estado-badge').textContent = ESTADOS[estado] || estado;
-    document.getElementById('chat-cliente-label').textContent = clienteNombre ? '👤 ' + clienteNombre : '';
+    // Cabecera del modal
+    document.getElementById('chat-id-label').textContent     = '#' + s.id;
+    document.getElementById('chat-estado-badge').className   = 'badge ' + (EST_CLASS[s.estado] || 's-pendiente');
+    document.getElementById('chat-estado-badge').textContent = ESTADOS[s.estado] || s.estado;
+    document.getElementById('chat-cliente-label').textContent = s.clienteNombre ? '👤 ' + s.clienteNombre : '';
 
     // Items
-    let items = [];
-    try { items = JSON.parse(itemsJson) || []; } catch(e) {}
-    const tbody = document.getElementById('chat-items-body');
+    var items = [];
+    try { items = JSON.parse(s.items) || []; } catch(e) {}
+    var tbody = document.getElementById('chat-items-body');
     tbody.innerHTML = items.length
-        ? items.map(it => `<tr><td>${it.desc||''}</td><td>${it.cant||''}</td><td>${it.uni||''}</td></tr>`).join('')
+        ? items.map(function(it) {
+            return '<tr><td>' + esc(it.desc||'') + '</td><td>' + esc(it.cant||'') + '</td><td>' + esc(it.uni||'') + '</td></tr>';
+          }).join('')
         : '<tr><td colspan="3" style="color:var(--muted);text-align:center">Sin conceptos</td></tr>';
 
-    // Formulario admin / display importe
-    const esAdmin = currentUser && currentUser.role === 'admin';
-    document.getElementById('form-respuesta').style.display        = esAdmin && estado !== 'respondida' ? 'block' : 'none';
-    document.getElementById('chat-importe-display').style.display  = importe ? 'block' : 'none';
-    if (importe) {
-        document.getElementById('chat-importe-valor').textContent     = '💰 ' + importe + ' €';
-        document.getElementById('chat-nota-admin-display').textContent = notaAdmin || '';
+    // Importe (si ya fue respondida)
+    var impDisplay = document.getElementById('chat-importe-display');
+    if (s.importe) {
+        impDisplay.style.display = 'block';
+        document.getElementById('chat-importe-valor').textContent      = '💰 ' + s.importe + ' euros';
+        document.getElementById('chat-nota-admin-display').textContent = s.notaAdmin || '';
+    } else {
+        impDisplay.style.display = 'none';
     }
-    document.getElementById('resp-importe').value = '';
-    document.getElementById('resp-nota').value    = '';
+
+    // Formulario cotizacion: SOLO admin Y solicitud NO respondida todavia
+    var esAdmin  = currentUser && currentUser.role === 'admin';
+    var formResp = document.getElementById('form-respuesta');
+    formResp.style.display = (esAdmin && s.estado !== 'respondida') ? 'block' : 'none';
+    document.getElementById('resp-importe').value     = '';
+    document.getElementById('resp-nota').value        = '';
     document.getElementById('err-resp').style.display = 'none';
+
+    // Mensajes
     document.getElementById('chat-msg').value = '';
+    document.getElementById('chat-mensajes').innerHTML = '<div class="chat-sin-msg">Cargando mensajes...</div>';
 
     cargarChat();
-    chatInterval = setInterval(cargarChat, 15000); // refresca cada 15s
+    chatInterval = setInterval(cargarChat, 15000); // refresca cada 15 segundos
     abrirModal('modal-chat');
 }
 
 async function cargarChat() {
     if (!chatSolId) return;
     try {
-        const data = await jsonp(`${URL_SCRIPT}?action=chat&solicitudId=${chatSolId}`);
+        var data = await jsonp(URL_SCRIPT + '?action=chat&solicitudId=' + chatSolId);
         renderMensajes(data.mensajes || []);
     } catch(e) {}
 }
 
 function renderMensajes(mensajes) {
-    const el = document.getElementById('chat-mensajes');
+    var el = document.getElementById('chat-mensajes');
     if (!mensajes.length) {
-        el.innerHTML = '<div class="chat-sin-msg">Aún no hay mensajes. ¡Empieza la conversación!</div>';
+        el.innerHTML = '<div class="chat-sin-msg">Aun no hay mensajes. Empieza la conversacion!</div>';
         return;
     }
-    el.innerHTML = mensajes.map(m => {
-        const tipo = (m.tipo || 'cliente');
-        const cls  = tipo === 'admin' ? 'msg-admin' : 'msg-cliente';
-        return `<div class="msg ${cls}">
-            <div class="msg-burbuja">${m.mensaje.replace(/\n/g,'<br>')}</div>
-            <div class="msg-meta">${m.autor} · ${m.fecha}</div>
-        </div>`;
+    el.innerHTML = mensajes.map(function(m) {
+        var tipo = m.tipo || 'cliente';
+        var cls  = tipo === 'admin' ? 'msg-admin' : 'msg-cliente';
+        return '<div class="msg ' + cls + '">' +
+            '<div class="msg-burbuja">' + esc(m.mensaje).replace(/\n/g,'<br>') + '</div>' +
+            '<div class="msg-meta">' + esc(m.autor) + ' · ' + esc(m.fecha) + '</div>' +
+            '</div>';
     }).join('');
     el.scrollTop = el.scrollHeight;
 }
 
 async function enviarMensaje() {
-    const inp = document.getElementById('chat-msg');
-    const msg = inp.value.trim();
+    var inp = document.getElementById('chat-msg');
+    var msg = inp.value.trim();
     if (!msg || !chatSolId) return;
-    const tipo  = (currentUser && currentUser.role === 'admin') ? 'admin' : 'cliente';
-    const autor = currentUser ? currentUser.name : 'Cliente';
+    var tipo  = (currentUser && currentUser.role === 'admin') ? 'admin' : 'cliente';
+    var autor = currentUser ? currentUser.name : 'Cliente';
     inp.value = '';
     try {
-        await jsonp(`${URL_SCRIPT}?action=mensaje&solicitudId=${chatSolId}&tipo=${tipo}&autor=${encodeURIComponent(autor)}&mensaje=${encodeURIComponent(msg)}`);
+        await jsonp(URL_SCRIPT + '?action=mensaje' +
+            '&solicitudId=' + chatSolId +
+            '&tipo=' + tipo +
+            '&autor=' + encodeURIComponent(autor) +
+            '&mensaje=' + encodeURIComponent(msg)
+        );
         await cargarChat();
     } catch(e) {}
 }
 
+// Admin: enviar cotizacion
 async function enviarRespuesta() {
-    const importe = document.getElementById('resp-importe').value.trim();
-    const nota    = document.getElementById('resp-nota').value.trim();
-    const err     = document.getElementById('err-resp');
-    if (!importe && !nota) { err.textContent='Escribe un importe o mensaje.'; err.style.display='block'; return; }
+    var importe = document.getElementById('resp-importe').value.trim();
+    var nota    = document.getElementById('resp-nota').value.trim();
+    var err     = document.getElementById('err-resp');
+    if (!importe && !nota) {
+        err.textContent = 'Escribe un importe o un mensaje.'; err.style.display = 'block'; return;
+    }
     err.style.display = 'none';
+
+    var btn = document.getElementById('btn-cotizar');
+    btn.innerHTML = '<span class="spinner"></span> Enviando...'; btn.disabled = true;
+
     try {
-        const res = await jsonp(`${URL_SCRIPT}?action=responder&solicitudId=${chatSolId}&importe=${encodeURIComponent(importe)}&nota=${encodeURIComponent(nota)}`);
+        var res = await jsonp(URL_SCRIPT + '?action=responder' +
+            '&solicitudId=' + chatSolId +
+            '&importe='     + encodeURIComponent(importe) +
+            '&nota='        + encodeURIComponent(nota)
+        );
         if (res.success) {
-            document.getElementById('form-respuesta').style.display = 'none';
-            if (importe) {
-                document.getElementById('chat-importe-display').style.display = 'block';
-                document.getElementById('chat-importe-valor').textContent = '💰 ' + importe + ' €';
-                document.getElementById('chat-nota-admin-display').textContent = nota;
+            // Actualizar _solMap
+            if (_solMap[chatSolId]) {
+                _solMap[chatSolId].estado    = 'respondida';
+                _solMap[chatSolId].importe   = importe;
+                _solMap[chatSolId].notaAdmin = nota;
             }
+            // Ocultar formulario y mostrar importe
+            document.getElementById('form-respuesta').style.display = 'none';
+            var impDisplay = document.getElementById('chat-importe-display');
+            impDisplay.style.display = 'block';
+            document.getElementById('chat-importe-valor').textContent      = '💰 ' + importe + ' euros';
+            document.getElementById('chat-nota-admin-display').textContent = nota;
+            // Actualizar badge
+            document.getElementById('chat-estado-badge').className   = 'badge s-respondida';
+            document.getElementById('chat-estado-badge').textContent = 'Respondida';
+            // Recargar chat y lista de solicitudes
             await cargarChat();
-            await refrescarSolicitudesAdmin();
+            try {
+                var dataS = await jsonp(URL_SCRIPT + '?action=solicitudes&role=admin');
+                renderAdminSolicitudes(dataS.solicitudes || []);
+            } catch(e2) {}
+        } else {
+            err.textContent = res.error || 'Error al enviar la cotizacion.'; err.style.display = 'block';
         }
-    } catch(e) { err.textContent='Error al enviar.'; err.style.display='block'; }
+    } catch(e) {
+        err.textContent = 'Error de conexion.'; err.style.display = 'block';
+    }
+    btn.innerHTML = 'Enviar Cotizacion'; btn.disabled = false;
 }
 
 function cerrarChat() {
@@ -726,9 +897,11 @@ function cerrarChat() {
 // ════════════════════════════════════════════════
 //  INICIO
 // ════════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', () => {
-    ['inp-email','inp-pass'].forEach(id => {
-        document.getElementById(id).addEventListener('keydown', e => { if(e.key==='Enter') entrar(); });
+document.addEventListener('DOMContentLoaded', function() {
+    ['inp-email','inp-pass'].forEach(function(id) {
+        document.getElementById(id).addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') entrar();
+        });
     });
     if (URL_SCRIPT === 'PEGA_AQUI_TU_URL') mostrar('p-config');
     else mostrar('p-login');
