@@ -404,8 +404,9 @@ var urlHoja      = '#';
 var chatSolId    = null;
 var chatInterval = null;
 var solInterval  = null;  // refresco automatico de solicitudes
-var _solMap      = {};    // almacen de solicitudes por ID (evita escaping en onclick)
-var _lastSolEstados = {}; // ultimo estado conocido de cada solicitud (para detectar cambios)
+var _solMap         = {};  // almacen de solicitudes por ID (evita escaping en onclick)
+var _lastSolEstados = {};  // ultimo estado conocido de cada solicitud
+var _lastMensajesNuevos = {}; // ultimo conteo de mensajes sin leer por solicitud
 
 var ESTADOS = {
     pendiente:'Pendiente', en_revision:'En Revision', en_proceso:'En Proceso',
@@ -540,6 +541,8 @@ function inicializarEstadosSolicitudes(solicitudes) {
             estado:  String(s.estado  || ''),
             importe: String(s.importe || '').trim()
         };
+        // Inicializar conteo de mensajes sin disparar notificaciones
+        _lastMensajesNuevos[String(s.id)] = s.mensajesNuevos || 0;
     });
 }
 
@@ -578,6 +581,24 @@ function detectarCambiosSolicitudes(solicitudes, esAdmin) {
 
         // Guardar estado actual siempre como string para evitar comparaciones de tipo
         _lastSolEstados[id] = { estado: estActual, importe: impActual };
+
+        // ── Detectar mensajes nuevos ──
+        var nuevosActual = s.mensajesNuevos || 0;
+        var nuevosPrev   = _lastMensajesNuevos[id] !== undefined ? _lastMensajesNuevos[id] : nuevosActual;
+
+        if (nuevosActual > nuevosPrev && chatSolId !== id) {
+            // Hay mensajes sin leer y el chat NO está abierto para esta solicitud
+            if (esAdmin) {
+                var sData  = _solMap[id];
+                var cliNom = sData ? esc(sData.clienteNombre) : '#' + id;
+                mostrarToast('💬', 'Nuevo mensaje de <strong>' + cliNom + '</strong> en solicitud <strong>#' + id + '</strong>');
+                ponerBadgeTab('atab-solicitudes');
+            } else {
+                mostrarToast('💬', 'Nuevo mensaje en solicitud <strong>#' + id + '</strong>');
+                ponerBadgeTab('tab-solicitudes');
+            }
+        }
+        _lastMensajesNuevos[id] = nuevosActual;
     });
 }
 
@@ -688,7 +709,7 @@ async function entrar() {
 function salir() {
     clearInterval(chatInterval); chatInterval = null;
     clearInterval(solInterval);  solInterval  = null; _pollingActivo = false;
-    chatSolId = null; _solMap = {}; _lastSolEstados = {};
+    chatSolId = null; _solMap = {}; _lastSolEstados = {}; _lastMensajesNuevos = {};
     document.getElementById('inp-email').value = '';
     document.getElementById('inp-pass').value  = '';
     mostrar('p-login');
@@ -727,22 +748,27 @@ function buildTablaTrabajos(trabajos, mostrarCliente) {
     var headers = trabajos.headers;
     var rows    = trabajos.rows || [];
     var cols    = mostrarCliente ? ['Cliente'].concat(headers) : headers;
-    var nCols   = cols.length;
+    var nCols   = cols.length + (mostrarCliente ? 1 : 0); // +1 para columna acciones admin
 
     var h = '<div class="tabla-wrap"><table class="tabla"><thead>';
     // Encabezados
-    h += '<tr>' + cols.map(function(c) { return '<th>' + esc(c) + '</th>'; }).join('') + '</tr>';
+    h += '<tr>' + cols.map(function(c) { return '<th>' + esc(c) + '</th>'; }).join('');
+    if (mostrarCliente) h += '<th>ACCIONES</th>';
+    h += '</tr>';
     // Filtros
     h += '<tr class="filtro-row">' + cols.map(function() {
         return '<td><input class="col-filter" placeholder="Filtrar..."></td>';
-    }).join('') + '</tr>';
+    }).join('');
+    if (mostrarCliente) h += '<td></td>'; // celda vacía en columna acciones
+    h += '</tr>';
     h += '</thead><tbody>';
 
     if (!rows.length) {
         h += '<tr class="sin-datos"><td colspan="' + nCols + '">Sin trabajos registrados aun.</td></tr>';
     } else {
         rows.forEach(function(row) {
-            h += '<tr>';
+            var tId = esc(row._id || '');
+            h += '<tr data-trabajo-id="' + tId + '">';
             if (mostrarCliente) h += '<td>' + esc(row._cliente || '') + '</td>';
             row.forEach(function(val, i) {
                 var hdr    = (headers[i] || '').toLowerCase();
@@ -758,11 +784,44 @@ function buildTablaTrabajos(trabajos, mostrarCliente) {
                 }
                 h += '<td>' + display + '</td>';
             });
+            // Botón eliminar solo en vista admin
+            if (mostrarCliente && tId) {
+                h += '<td style="white-space:nowrap">' +
+                     '<button class="btn btn-sm" style="background:#FEF2F2;color:#DC2626" ' +
+                     'onclick="eliminarTrabajo(\'' + tId + '\')" title="Eliminar trabajo">🗑️</button>' +
+                     '</td>';
+            } else if (mostrarCliente) {
+                h += '<td></td>';
+            }
             h += '</tr>';
         });
     }
     h += '</tbody></table></div>';
     return h;
+}
+
+// ── Eliminar trabajo (solo admin) ──
+async function eliminarTrabajo(trabajoId) {
+    if (!confirm('¿Eliminar este trabajo?\nEsta acción no se puede deshacer.')) return;
+
+    try {
+        var res = await jsonp(
+            URL_SCRIPT + '?action=eliminarTrabajo' +
+            '&trabajoId=' + encodeURIComponent(trabajoId) +
+            '&role=admin' +
+            '&_t=' + Date.now()
+        );
+        if (res.success) {
+            // Quitar la fila del DOM directamente (sin recargar)
+            var fila = document.querySelector('[data-trabajo-id="' + trabajoId + '"]');
+            if (fila) fila.remove();
+            mostrarToast('🗑️', 'Trabajo eliminado correctamente');
+        } else {
+            alert('Error al eliminar: ' + (res.error || 'Error desconocido'));
+        }
+    } catch(e) {
+        alert('Error de conexión al eliminar el trabajo.');
+    }
 }
 
 // ════════════════════════════════════════════════
@@ -978,13 +1037,14 @@ function renderAdminTrabajos(clients) {
         return;
     }
 
-    // Aplanar todas las filas con _cliente
+    // Aplanar todas las filas con _cliente y _id (necesario para eliminarTrabajo)
     var allRows = [];
     clients.forEach(function(c) {
         if (c.trabajos && c.trabajos.rows) {
             c.trabajos.rows.forEach(function(row) {
                 var r = row.slice(); // copia del array
                 r._cliente = c.name;
+                r._id      = row._id;     // ID del trabajo para eliminar
                 allRows.push(r);
             });
         }
@@ -1063,9 +1123,14 @@ function abrirChat(solId) {
 
 async function cargarChat() {
     if (!chatSolId) return;
+    var lector = (currentUser && currentUser.role === 'admin') ? 'admin' : 'cliente';
     try {
-        var data = await jsonp(URL_SCRIPT + '?action=chat&solicitudId=' + chatSolId);
+        var data = await jsonp(
+            URL_SCRIPT + '?action=chat&solicitudId=' + chatSolId + '&lector=' + lector
+        );
         renderMensajes(data.mensajes || []);
+        // Marcar localmente como leídos para que el polling no relance notificaciones
+        _lastMensajesNuevos[chatSolId] = 0;
     } catch(e) {}
 }
 
